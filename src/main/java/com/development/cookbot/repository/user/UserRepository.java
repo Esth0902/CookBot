@@ -1,4 +1,4 @@
-package com.development.cookbot.repository;
+package com.development.cookbot.repository.user;
 
 import com.development.cookbot.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
