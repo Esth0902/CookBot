@@ -1,6 +1,6 @@
 package com.development.cookbot.security;
 
-import com.development.cookbot.repository.UserRepository;
+import com.development.cookbot.repository.user.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

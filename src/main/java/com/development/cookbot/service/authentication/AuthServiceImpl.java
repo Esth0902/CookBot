@@ -3,7 +3,7 @@ package com.development.cookbot.service.authentication;
 import com.development.cookbot.dto.authentication.LoginDto;
 import com.development.cookbot.dto.authentication.RegisterDto;
 import com.development.cookbot.entity.UserEntity;
-import com.development.cookbot.repository.UserRepository;
+import com.development.cookbot.repository.user.UserRepository;
 import com.development.cookbot.security.JwtTokenProvider;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
