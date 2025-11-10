@@ -1,6 +1,7 @@
 package com.development.cookbot.controller.recipe;
 
 import com.development.cookbot.dto.recipe.RecipeInputDto;
+import com.development.cookbot.dto.recipe.RecipeResponseDto;
 import com.development.cookbot.exception.utils.Response;
 import com.development.cookbot.service.recipe.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,14 @@ public class RecipeController {
 
     @GetMapping("/{recipeId}")
     public ResponseEntity<Object> getRecipe(@PathVariable Long recipeId) {
-        return null;
+        RecipeResponseDto recipeResponseDto = recipeService.getRecipeById(recipeId);
+        Response<RecipeResponseDto> response = Response.<RecipeResponseDto>builder()
+                .responseCode(HttpStatus.OK.value())
+                .responseMessage("Recipe retrieved successfully")
+                .data(recipeResponseDto)
+                .success(true)
+                .build();
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping

@@ -1,6 +1,6 @@
 ### POST Register
 POST http://localhost:8080/api/v1/recipe
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsImlhdCI6MTc2MjcxMjI1MSwiZXhwIjoxNzYyNzE1ODUxfQ.xwTxHM-IdinmwWAmCvaIaZf4mNBVWUnYHJlJ5r9BQDo
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsImlhdCI6MTc2Mjc5NTkwOCwiZXhwIjoxNzYyNzk5NTA4fQ.3HtrOLLJs2hiN9EP36LjXghDyf2vlnLtWqLlYJLiRtc
 Content-Type: application/json
 
 {
@@ -40,4 +40,6 @@ Content-Type: application/json
   ]
 }
 
-###
+### GET
+http://localhost:8080/api/v1/recipe/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsImlhdCI6MTc2Mjc5Njc5MCwiZXhwIjoxNzYyODAwMzkwfQ.OXD8fadXNsnezsx3SU_9bQ6Bb-epNMqlXnHMRoBHMUI

@@ -86,7 +86,14 @@ public class RecipeService {
         RecipeEntity recipeEntity = recipeRepository.findById(recipeId).orElseThrow(()
                 -> new NotFoundException("Recipe not found"));
 
-        return null;
+        RecipeResponseDto recipeResponseDto = recipeMapper.ToRecipeResponseDto(recipeEntity);
+        List<IngredientDto> ingredientDtos = ingredientMapper.TopIngredientDto(recipeEntity.getIngredients());
+        List<StepDto> stepDtos = stepMapper.ToStepDto(recipeEntity.getSteps());
+
+        recipeResponseDto.setIngredients(ingredientDtos);
+        recipeResponseDto.setSteps(stepDtos);
+
+        return recipeResponseDto;
     }
 
 }
