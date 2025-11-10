@@ -1,0 +1,70 @@
+### POST recipe
+POST http://localhost:8080/api/auth/recipe
+Content-Type: application/json
+
+{
+  "ingredients": [
+    {
+      "name": "Tomates",
+      "quantity": 4,
+      "unit": "tomates"
+    },
+    {
+      "name": "Oeufs",
+      "quantity": 4,
+      "unit": "Oeufs"
+    },
+    {
+      "name": "Oignon",
+      "quantity": 1,
+      "unit": "oignon"
+    },
+    {
+      "name": "Sel",
+      "quantity": 10,
+      "unit": "grammes"
+    },
+    {
+      "name": "Fines herbes",
+      "quantity": 50,
+      "unit": "grammes"
+    }
+  ]
+}
+
+
+### POST recipeTitle
+POST http://localhost:8080/api/auth/recipeTitle
+Content-Type: application/json
+
+{
+  "ingredients": [
+    {
+      "name": "Tomates",
+      "quantity": 4,
+      "unit": "tomates"
+    },
+    {
+      "name": "Oeufs",
+      "quantity": 4,
+      "unit": "Oeufs"
+    },
+    {
+      "name": "Oignon",
+      "quantity": 1,
+      "unit": "oignon"
+    },
+    {
+      "name": "Sel",
+      "quantity": 10,
+      "unit": "grammes"
+    },
+    {
+      "name": "Fines herbes",
+      "quantity": 50,
+      "unit": "grammes"
+    }
+  ]
+}
+
+###

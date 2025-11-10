@@ -2,6 +2,7 @@ package com.development.cookbot.service.recipe;
 
 import com.development.cookbot.dto.ingredient.IngredientDto;
 import com.development.cookbot.dto.recipe.RecipeInputDto;
+import com.development.cookbot.dto.recipe.RecipeResponseDto;
 import com.development.cookbot.dto.step.StepDto;
 import com.development.cookbot.entity.IngredientEntity;
 import com.development.cookbot.entity.RecipeEntity;
@@ -78,6 +79,14 @@ public class RecipeService {
         }
 
         throw new NotFoundException("User not found");
+    }
+
+    public RecipeResponseDto getRecipeById(Long recipeId) {
+
+        RecipeEntity recipeEntity = recipeRepository.findById(recipeId).orElseThrow(()
+                -> new NotFoundException("Recipe not found"));
+
+        return null;
     }
 
 }
