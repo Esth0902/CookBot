@@ -96,4 +96,70 @@ public class RecipeService {
         return recipeResponseDto;
     }
 
+    public RecipeResponseDto updateFavoriteRecipeById(Long recipeId) {
+
+        RecipeEntity recipeEntity = recipeRepository.findById(recipeId).orElseThrow(()
+                -> new NotFoundException("Recipe not found"));
+
+        Optional<UserEntity> userEntity = userRepository.findByUsername(authenticationService.getPrincipal().getUsername());
+
+        if(userEntity.isPresent()) {
+
+            if(!recipeEntity.getUser().getId().equals(userEntity.get().getId())) {
+                throw new NotFoundException("User not allow to update this recipe");
+            }
+
+            recipeEntity.setIsFavorite(!recipeEntity.getIsFavorite());
+            RecipeEntity recipeEntityUpdated = recipeRepository.save(recipeEntity);
+
+            RecipeResponseDto recipeResponseDto = recipeMapper.ToRecipeResponseDto(recipeEntityUpdated);
+            List<IngredientDto> ingredientDtos = ingredientMapper.TopIngredientDto(recipeEntityUpdated.getIngredients());
+            List<StepDto> stepDtos = stepMapper.ToStepDto(recipeEntityUpdated.getSteps());
+
+            recipeResponseDto.setIngredients(ingredientDtos);
+            recipeResponseDto.setSteps(stepDtos);
+
+            return recipeResponseDto;
+        }
+        throw new NotFoundException("User not found");
+    }
+
+    public List<RecipeResponseDto> getAllUserRecipe() {
+
+        Optional<UserEntity> userEntity = userRepository.findByUsername(authenticationService.getPrincipal().getUsername());
+
+        if(userEntity.isPresent()) {
+            List<RecipeEntity> recipeEntities = recipeRepository.findRecipeByUser(userEntity.get().getId());
+            List<RecipeResponseDto> recipeResponseDtos = new ArrayList<>();
+            for(RecipeEntity recipeEntity:recipeEntities) {
+                RecipeResponseDto recipeResponseDto = recipeMapper.ToRecipeResponseDto(recipeEntity);
+                recipeResponseDto.setIngredients(ingredientMapper.TopIngredientDto(recipeEntity.getIngredients()));
+                recipeResponseDto.setSteps(stepMapper.ToStepDto(recipeEntity.getSteps()));
+                recipeResponseDtos.add(recipeResponseDto);
+            }
+            return recipeResponseDtos;
+        }
+
+        throw new NotFoundException("User not found");
+    }
+
+    public List<RecipeResponseDto> getAllFavoriteRecipe() {
+
+        Optional<UserEntity> userEntity = userRepository.findByUsername(authenticationService.getPrincipal().getUsername());
+
+        if(userEntity.isPresent()) {
+            List<RecipeEntity> recipeEntities = recipeRepository.findAllFavoriteRecipes(userEntity.get().getId());
+            List<RecipeResponseDto> recipeResponseDtos = new ArrayList<>();
+            for(RecipeEntity recipeEntity:recipeEntities) {
+                RecipeResponseDto recipeResponseDto = recipeMapper.ToRecipeResponseDto(recipeEntity);
+                recipeResponseDto.setIngredients(ingredientMapper.TopIngredientDto(recipeEntity.getIngredients()));
+                recipeResponseDto.setSteps(stepMapper.ToStepDto(recipeEntity.getSteps()));
+                recipeResponseDtos.add(recipeResponseDto);
+            }
+            return recipeResponseDtos;
+        }
+
+        throw new NotFoundException("User not found");
+    }
+
 }

@@ -1,16 +1,16 @@
 ### POST Register
-POST http://localhost:8080/api/v1/recipe
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsImlhdCI6MTc2Mjc5NTkwOCwiZXhwIjoxNzYyNzk5NTA4fQ.3HtrOLLJs2hiN9EP36LjXghDyf2vlnLtWqLlYJLiRtc
+POST {{host}}:{{port}}/api/v1/recipe
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "name": "Test name",
+  "name": "Test name 1",
   "durationMinutes": 50,
   "isFavorite": false,
   "ingredients": [
     {
       "name":"Patate",
-      "quantity": 5,
+      "quantity": 3,
       "unit": "unite"
     },
     {
@@ -20,7 +20,7 @@ Content-Type: application/json
     },
     {
       "name":"Eau",
-      "quantity": 200,
+      "quantity": 800,
       "unit": "ml"
     }
   ],
@@ -40,6 +40,18 @@ Content-Type: application/json
   ]
 }
 
-### GET
-http://localhost:8080/api/v1/recipe/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsImlhdCI6MTc2Mjc5Njc5MCwiZXhwIjoxNzYyODAwMzkwfQ.OXD8fadXNsnezsx3SU_9bQ6Bb-epNMqlXnHMRoBHMUI
+### GET recipe by id
+GET {{host}}:{{port}}/api/v1/recipe/1
+Authorization: Bearer {{token}}
+
+### GET all recipes for a user
+GET {{host}}:{{port}}/api/v1/recipe/all
+Authorization: Bearer {{token}}
+
+### GET all favorite recipes
+GET {{host}}:{{port}}/api/v1/recipe/favorites
+Authorization: Bearer {{token}}
+
+### PATCH switch favorite recipe
+PATCH {{host}}:{{port}}/api/v1/recipe/1
+Authorization: Bearer {{token}}
