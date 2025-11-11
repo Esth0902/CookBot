@@ -69,7 +69,7 @@ Content-Type: application/json
 
 
 ### POST a image to image in order to recieve titles for recipe
-POST {{host}}:{{port}}/api/auth/recipe/image
+POST {{host}}:{{port}}/api/auth/recipeTitle/image
 Content-Type: multipart/form-data; boundary=----boundary
 
 ------boundary

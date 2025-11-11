@@ -36,7 +36,7 @@ public class AIAgentController {
                 .build();
     }
 
-    @PostMapping(value = "/recipe/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/recipeTitle/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public AiRecipeTitleResponseDto askRecipeTitleFromImage(@RequestParam(name="file") MultipartFile file)
             throws IOException {
 
@@ -48,6 +48,8 @@ public class AIAgentController {
                         media(MediaType.IMAGE_PNG, new ByteArrayResource(bytes))
                 ).call().entity(AiRecipeTitleResponseDto.class);
     }
+
+    //TODO : retrieve complete recite from image
 
     @GetMapping("/chat")
     public Flux<String> askChat(String query) {
