@@ -4,7 +4,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "name": "Test name 1",
+  "name": "Test name 2",
   "durationMinutes": 50,
   "isFavorite": false,
   "ingredients": [
@@ -59,3 +59,45 @@ Authorization: Bearer {{token}}
 ### DELETE recipe by id
 DELETE {{host}}:{{port}}/api/v1/recipe/2
 Authorization: Bearer {{token}}
+
+### PUT updated recipe
+PUT {{host}}:{{port}}/api/v1/recipe/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Test name update",
+  "durationMinutes": 50,
+  "isFavorite": false,
+  "ingredients": [
+    {
+      "name":"Patate update",
+      "quantity": 32,
+      "unit": "unite"
+    },
+    {
+      "name":"Farine update",
+      "quantity": 502,
+      "unit": "gr"
+    },
+    {
+      "name":"Eau",
+      "quantity": 800,
+      "unit": "ml"
+    }
+  ],
+  "steps": [
+    {
+      "stepNumber": 1,
+      "description": "Couper pomme de terre"
+    },
+    {
+      "stepNumber": 2,
+      "description": "Couper les tomates update"
+    },
+    {
+      "stepNumber": 3,
+      "description": "Mettre au four update"
+    }
+  ]
+}

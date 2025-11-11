@@ -10,11 +10,11 @@ import java.util.List;
 
 @Service
 public class IngredientMapper {
-    public IngredientEntity toIngredientEntity(IngredientDto ingredientDto, RecipeEntity savedRecipeEntity) {
+    public IngredientEntity toIngredientEntity(IngredientDto ingredientDto, RecipeEntity recipeEntity) {
         return  IngredientEntity.builder()
                 .name(ingredientDto.getName())
                 .quantity(ingredientDto.getQuantity())
-                .recipe(savedRecipeEntity)
+                .recipe(recipeEntity)
                 .unit(ingredientDto.getUnit())
                 .build();
     }

@@ -10,11 +10,11 @@ import java.util.List;
 
 @Service
 public class StepMapper {
-    public StepEntity toStepEntity(StepDto stepDto, RecipeEntity savedRecipeEntity) {
+    public StepEntity toStepEntity(StepDto stepDto, RecipeEntity recipeEntity) {
         return   StepEntity.builder()
                 .stepNumber(stepDto.getStepNumber())
                 .description(stepDto.getDescription())
-                .recipe(savedRecipeEntity)
+                .recipe(recipeEntity)
                 .build();
     }
 

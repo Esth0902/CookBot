@@ -178,4 +178,52 @@ public class RecipeService {
         throw new NotFoundException("User not found");
     }
 
+    public RecipeResponseDto updateRecipe(Long recipeId, RecipeInputDto recipeInputDto) {
+
+        Optional<UserEntity> userEntity = userRepository.findByUsername(authenticationService.getPrincipal().getUsername());
+
+        if(userEntity.isPresent()) {
+
+            RecipeEntity recipeEntity = recipeRepository.findById(recipeId).orElseThrow(()
+                    -> new NotFoundException("Recipe not found"));
+
+            if(!recipeEntity.getUser().getId().equals(userEntity.get().getId())) {
+                throw new NotFoundException("User not allow to update this recipe");
+            }
+
+            /* UPDATE RECIPE ID BY RECONSTRUCT ID */
+            recipeEntity.setName(recipeInputDto.getName());
+            recipeEntity.setDurationMinutes(recipeInputDto.getDurationMinutes());
+            recipeEntity.setIsFavorite(recipeInputDto.getIsFavorite());
+
+            recipeEntity.getIngredients().clear();
+
+            for (IngredientDto ingredientDto : recipeInputDto.getIngredients()) {
+                IngredientEntity ingredientEntity = ingredientMapper.toIngredientEntity(ingredientDto, recipeEntity);
+                recipeEntity.getIngredients().add(ingredientEntity);
+            }
+
+            recipeEntity.getSteps().clear();
+
+            for (StepDto stepDto : recipeInputDto.getSteps()) {
+                StepEntity stepEntity = stepMapper.toStepEntity(stepDto, recipeEntity);
+                recipeEntity.getSteps().add(stepEntity);
+            }
+
+            RecipeEntity recipeEntityUpdate = recipeRepository.save(recipeEntity);
+
+            /* MAP TO RECIPE DTO  */
+            RecipeResponseDto recipeResponseDto = recipeMapper.ToRecipeResponseDto(recipeEntityUpdate);
+            List<IngredientDto> ingredientDtos = ingredientMapper.TopIngredientDto(recipeEntityUpdate.getIngredients());
+            List<StepDto> stepDtos = stepMapper.ToStepDto(recipeEntityUpdate.getSteps());
+
+            recipeResponseDto.setIngredients(ingredientDtos);
+            recipeResponseDto.setSteps(stepDtos);
+
+            return recipeResponseDto;
+        }
+
+        throw new NotFoundException("User not found");
+    }
+
 }
