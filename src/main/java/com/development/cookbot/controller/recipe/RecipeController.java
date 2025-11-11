@@ -42,6 +42,18 @@ public class RecipeController {
         return ResponseEntity.ok(response);
     }
 
+    @DeleteMapping("/{recipeId}")
+    public ResponseEntity<Object> deleteRecipeById(@PathVariable Long recipeId) {
+        String responseRecipe = recipeService.deleteRecipeById(recipeId);
+        Response<String> response = Response.<String>builder()
+                .responseCode(HttpStatus.OK.value())
+                .responseMessage("Recipe deleted successfully")
+                .data(responseRecipe)
+                .success(true)
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
     @PutMapping("/{recipeId}")
     public ResponseEntity<Object> updateRecipe(@PathVariable Long recipeId, @RequestBody RecipeInputDto recipeInputDto) {
         return null;

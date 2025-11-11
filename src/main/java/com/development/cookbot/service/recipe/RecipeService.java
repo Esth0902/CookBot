@@ -162,4 +162,20 @@ public class RecipeService {
         throw new NotFoundException("User not found");
     }
 
+    public String deleteRecipeById(Long recipeId) {
+        Optional<UserEntity> userEntity = userRepository.findByUsername(authenticationService.getPrincipal().getUsername());
+
+        if(userEntity.isPresent()) {
+            RecipeEntity recipeEntity = recipeRepository.findById(recipeId).orElseThrow(()
+                    -> new NotFoundException("Recipe not found"));
+            if(!recipeEntity.getUser().getId().equals(userEntity.get().getId())) {
+                throw new NotFoundException("User not allow to delete this recipe");
+            }
+            String recipeName = recipeEntity.getName();
+            recipeRepository.deleteById(recipeId);
+            return "Recipe " +  recipeName +  " deleted successfully";
+        }
+        throw new NotFoundException("User not found");
+    }
+
 }

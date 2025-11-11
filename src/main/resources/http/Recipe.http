@@ -55,3 +55,7 @@ Authorization: Bearer {{token}}
 ### PATCH switch favorite recipe
 PATCH {{host}}:{{port}}/api/v1/recipe/1
 Authorization: Bearer {{token}}
+
+### DELETE recipe by id
+DELETE {{host}}:{{port}}/api/v1/recipe/2
+Authorization: Bearer {{token}}
