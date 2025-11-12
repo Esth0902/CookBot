@@ -78,3 +78,15 @@ Content-Type: image/png
 
 < C:/Users/thoma/Downloads/product.png
 ------boundary--
+
+
+### POST a image to image in order to recieve a FULL recipe
+POST {{host}}:{{port}}/api/auth/recipe/image
+Content-Type: multipart/form-data; boundary=----boundary
+
+------boundary
+Content-Disposition: form-data; name="file"; filename="product.png"
+Content-Type: image/png
+
+< C:/Users/thoma/Downloads/product.png
+------boundary--

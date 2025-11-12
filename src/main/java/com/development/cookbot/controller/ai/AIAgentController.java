@@ -49,7 +49,17 @@ public class AIAgentController {
                 ).call().entity(AiRecipeTitleResponseDto.class);
     }
 
-    //TODO : retrieve complete recite from image
+    @PostMapping(value = "/recipe/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public AiRecipeResponseDto askRecipeFromImage(@RequestParam(name="file") MultipartFile file) throws IOException {
+        byte[] bytes = file.getBytes();
+        List<Message> examples = aiService.fewShotRecipeMessagesFromImages();
+        return chatClient.prompt()
+                .system(AiConstant.SYSTEM_MESSAGE_RECIPE_V2)
+                .messages(examples)
+                .user(u -> u.text("Donne mois une recette complète sur base de l'image suivante :").
+                        media(MediaType.IMAGE_PNG, new ByteArrayResource(bytes))
+                ).call().entity(AiRecipeResponseDto.class);
+    }
 
     @GetMapping("/chat")
     public Flux<String> askChat(String query) {

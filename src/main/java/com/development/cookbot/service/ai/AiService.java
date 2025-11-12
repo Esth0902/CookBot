@@ -61,6 +61,49 @@ public class AiService {
         """.formatted(ingredientsList);
     }
 
+    public List<Message> fewShotRecipeMessagesFromImages() {
+        return List.of(
+                new UserMessage("Image montrant des œufs, du pain et du lait."),
+                new AssistantMessage("""
+                {
+                  "name": "Pain perdu",
+                  "durationMinutes": 15,
+                  "ingredients": [
+                    { "name": "pain", "quantity": 4, "unit": "tranches" },
+                    { "name": "œufs", "quantity": 2, "unit": "pièces" },
+                    { "name": "lait", "quantity": 100, "unit": "ml" },
+                    { "name": "sucre", "quantity": 10, "unit": "g" },
+                    { "name": "beurre", "quantity": 10, "unit": "g" }
+                  ],
+                  "steps": [
+                    { "stepNumber": 1, "description": "Battre les œufs avec le lait et le sucre." },
+                    { "stepNumber": 2, "description": "Tremper les tranches de pain dans le mélange." },
+                    { "stepNumber": 3, "description": "Faire dorer les tranches dans le beurre à la poêle." }
+                  ]
+                }
+            """),
+                new UserMessage("Image montrant des tomates, des pâtes et du fromage râpé."),
+                new AssistantMessage("""
+                {
+                  "name": "Pâtes à la sauce tomate",
+                  "durationMinutes": 20,
+                  "ingredients": [
+                    { "name": "pâtes", "quantity": 200, "unit": "g" },
+                    { "name": "tomates", "quantity": 3, "unit": "pièces" },
+                    { "name": "ail", "quantity": 1, "unit": "gousse" },
+                    { "name": "huile d'olive", "quantity": 10, "unit": "ml" },
+                    { "name": "fromage râpé", "quantity": 20, "unit": "g" }
+                  ],
+                  "steps": [
+                    { "stepNumber": 1, "description": "Faire cuire les pâtes dans de l'eau bouillante salée." },
+                    { "stepNumber": 2, "description": "Préparer une sauce avec les tomates, l’ail et l’huile d’olive." },
+                    { "stepNumber": 3, "description": "Mélanger les pâtes et la sauce, puis parsemer de fromage." }
+                  ]
+                }
+            """)
+        );
+    }
+
     public List<Message> fewShotRecipeTitleMessages() {
         return List.of(
                 new UserMessage("""
