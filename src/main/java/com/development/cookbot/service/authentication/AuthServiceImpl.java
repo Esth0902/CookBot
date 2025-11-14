@@ -2,6 +2,7 @@ package com.development.cookbot.service.authentication;
 
 import com.development.cookbot.dto.authentication.LoginDto;
 import com.development.cookbot.dto.authentication.RegisterDto;
+import com.development.cookbot.entity.Role;
 import com.development.cookbot.entity.UserEntity;
 import com.development.cookbot.repository.user.UserRepository;
 import com.development.cookbot.security.JwtTokenProvider;
@@ -42,7 +43,7 @@ public class AuthServiceImpl implements AuthService {
         UserEntity user = new UserEntity();
         user.setUsername(registerDto.getUsername());
         user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
-        user.setRole(registerDto.getRole());
+        user.setRole(Role.FREE);
 
         userRepository.save(user);
 
