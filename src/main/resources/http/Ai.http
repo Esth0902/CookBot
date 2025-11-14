@@ -1,5 +1,5 @@
 ### POST recipe
-POST http://localhost:8080/api/auth/recipe
+POST {{host}}:{{port}}/api/auth/recipe
 Content-Type: application/json
 
 {
@@ -34,7 +34,7 @@ Content-Type: application/json
 
 
 ### POST recipeTitle
-POST http://localhost:8080/api/auth/recipeTitle
+POST {{host}}:{{port}}/api/auth/recipeTitle
 Content-Type: application/json
 
 {
@@ -67,4 +67,26 @@ Content-Type: application/json
   ]
 }
 
-###
+
+### POST a image to image in order to recieve titles for recipe
+POST {{host}}:{{port}}/api/auth/recipeTitle/image
+Content-Type: multipart/form-data; boundary=----boundary
+
+------boundary
+Content-Disposition: form-data; name="file"; filename="product.png"
+Content-Type: image/png
+
+< C:/Users/thoma/Downloads/product.png
+------boundary--
+
+
+### POST a image to image in order to recieve a FULL recipe
+POST {{host}}:{{port}}/api/auth/recipe/image
+Content-Type: multipart/form-data; boundary=----boundary
+
+------boundary
+Content-Disposition: form-data; name="file"; filename="product.png"
+Content-Type: image/png
+
+< C:/Users/thoma/Downloads/product.png
+------boundary--

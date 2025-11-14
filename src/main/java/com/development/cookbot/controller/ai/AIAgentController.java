@@ -11,9 +11,13 @@ import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import reactor.core.publisher.Flux;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -32,8 +36,32 @@ public class AIAgentController {
                 .build();
     }
 
+    @PostMapping(value = "/recipeTitle/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public AiRecipeTitleResponseDto askRecipeTitleFromImage(@RequestParam(name="file") MultipartFile file)
+            throws IOException {
+
+        byte[] bytes = file.getBytes();
+        return chatClient.prompt()
+                .system(AiConstant.SYSTEM_MESSAGE_RECIPE_TITLE_V2)
+                .user(u -> u.
+                        text("Donne moi des noms de recette et son temps de cuisson sur base de l'image suivante :").
+                        media(MediaType.IMAGE_PNG, new ByteArrayResource(bytes))
+                ).call().entity(AiRecipeTitleResponseDto.class);
+    }
+
+    @PostMapping(value = "/recipe/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public AiRecipeResponseDto askRecipeFromImage(@RequestParam(name="file") MultipartFile file) throws IOException {
+        byte[] bytes = file.getBytes();
+        List<Message> examples = aiService.fewShotRecipeMessagesFromImages();
+        return chatClient.prompt()
+                .system(AiConstant.SYSTEM_MESSAGE_RECIPE_V2)
+                .messages(examples)
+                .user(u -> u.text("Donne mois une recette complète sur base de l'image suivante :").
+                        media(MediaType.IMAGE_PNG, new ByteArrayResource(bytes))
+                ).call().entity(AiRecipeResponseDto.class);
+    }
+
     @GetMapping("/chat")
-    //@PreAuthorize("hasRole('ADMIN')")
     public Flux<String> askChat(String query) {
         return chatClient.prompt()
                 .user(query)

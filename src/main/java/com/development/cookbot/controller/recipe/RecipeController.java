@@ -1,12 +1,15 @@
 package com.development.cookbot.controller.recipe;
 
 import com.development.cookbot.dto.recipe.RecipeInputDto;
+import com.development.cookbot.dto.recipe.RecipeResponseDto;
 import com.development.cookbot.exception.utils.Response;
 import com.development.cookbot.service.recipe.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/recipe")
@@ -29,17 +32,74 @@ public class RecipeController {
 
     @PatchMapping("/{recipeId}")
     public ResponseEntity<Object> switchFavoriteRecipe(@PathVariable Long recipeId) {
-        return null;
+        RecipeResponseDto recipeResponseDto = recipeService.updateFavoriteRecipeById(recipeId);
+        Response<RecipeResponseDto> response = Response.<RecipeResponseDto>builder()
+                .responseCode(HttpStatus.OK.value())
+                .responseMessage("Recipe retrieved successfully")
+                .data(recipeResponseDto)
+                .success(true)
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{recipeId}")
+    public ResponseEntity<Object> deleteRecipeById(@PathVariable Long recipeId) {
+        String responseRecipe = recipeService.deleteRecipeById(recipeId);
+        Response<String> response = Response.<String>builder()
+                .responseCode(HttpStatus.OK.value())
+                .responseMessage("Recipe deleted successfully")
+                .data(responseRecipe)
+                .success(true)
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{recipeId}")
+    public ResponseEntity<Object> updateRecipe(@PathVariable Long recipeId, @RequestBody RecipeInputDto recipeInputDto) {
+        RecipeResponseDto recipeResponseDto = recipeService.updateRecipe(recipeId,recipeInputDto);
+        Response<RecipeResponseDto> response = Response.<RecipeResponseDto>builder()
+                .responseCode(HttpStatus.OK.value())
+                .responseMessage("Recipe updated successfully")
+                .data(recipeResponseDto)
+                .success(true)
+                .build();
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{recipeId}")
     public ResponseEntity<Object> getRecipe(@PathVariable Long recipeId) {
-        return null;
+        RecipeResponseDto recipeResponseDto = recipeService.getRecipeById(recipeId);
+        Response<RecipeResponseDto> response = Response.<RecipeResponseDto>builder()
+                .responseCode(HttpStatus.OK.value())
+                .responseMessage("Recipe retrieved successfully")
+                .data(recipeResponseDto)
+                .success(true)
+                .build();
+        return ResponseEntity.ok(response);
     }
 
-    @GetMapping
-    public ResponseEntity<Object> getAllRecipe() {
-        return null;
+    @GetMapping("/favorites")
+    public ResponseEntity<Object> getUserFavoriteRecipe() {
+        List<RecipeResponseDto> recipeResponseDtos = recipeService.getAllFavoriteRecipe();
+        Response<List<RecipeResponseDto>> response = Response.<List<RecipeResponseDto>>builder()
+                .responseCode(HttpStatus.OK.value())
+                .responseMessage("All favorite recipes was retrieved successfully")
+                .data(recipeResponseDtos)
+                .success(true)
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<Object> getAllUserRecipe() {
+        List<RecipeResponseDto> recipeResponseDtos = recipeService.getAllUserRecipe();
+        Response<List<RecipeResponseDto>> response = Response.<List<RecipeResponseDto>>builder()
+                .responseCode(HttpStatus.OK.value())
+                .responseMessage("Recipes retrieved successfully")
+                .data(recipeResponseDtos)
+                .success(true)
+                .build();
+        return ResponseEntity.ok(response);
     }
 
 }
