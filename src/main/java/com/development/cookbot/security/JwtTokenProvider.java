@@ -31,6 +31,7 @@ public class JwtTokenProvider {
 
         return Jwts.builder()
                 .setSubject(username)
+                .claim("role", authentication.getAuthorities().iterator().next().getAuthority())
                 .setIssuedAt(new Date())
                 .setExpiration(expireDate)
                 .signWith(key(), SignatureAlgorithm.HS256)
