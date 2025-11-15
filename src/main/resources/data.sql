@@ -1,10 +1,10 @@
 
 -- Users
 -- Passwords are encrypted using BCrypt ("password")
-INSERT INTO users (id, username, password,role) VALUES
-(1, 'userFree', '$2a$10$yt/HxLeVbRhwESRqb54P6O5N.9ku1I9arSOdyBvh8l1icgUiP1IrS','FREE'),
-(2, 'userPremium', '$2a$10$yt/HxLeVbRhwESRqb54P6O5N.9ku1I9arSOdyBvh8l1icgUiP1IrS','PREMIUM'),
-(3, 'userAdmin', '$2a$10$yt/HxLeVbRhwESRqb54P6O5N.9ku1I9arSOdyBvh8l1icgUiP1IrS','ADMIN');
+INSERT INTO users (username, password,role) VALUES
+('userFree', '$2a$10$yt/HxLeVbRhwESRqb54P6O5N.9ku1I9arSOdyBvh8l1icgUiP1IrS','FREE'),
+( 'userPremium', '$2a$10$yt/HxLeVbRhwESRqb54P6O5N.9ku1I9arSOdyBvh8l1icgUiP1IrS','PREMIUM'),
+( 'userAdmin', '$2a$10$yt/HxLeVbRhwESRqb54P6O5N.9ku1I9arSOdyBvh8l1icgUiP1IrS','ADMIN');
 
 -- Recipes for user1
 INSERT INTO recipes (id, name, duration_minutes, is_favorite, user_id) VALUES
