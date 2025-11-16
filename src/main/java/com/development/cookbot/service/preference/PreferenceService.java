@@ -2,8 +2,11 @@ package com.development.cookbot.service.preference;
 
 import com.development.cookbot.dto.client.UserPrincipalDto;
 import com.development.cookbot.dto.preference.PreferenceDto;
+import com.development.cookbot.dto.setting.SettingDto;
 import com.development.cookbot.entity.PreferenceEntity;
+import com.development.cookbot.entity.SettingEntity;
 import com.development.cookbot.entity.UserEntity;
+import com.development.cookbot.exception.NotFoundException;
 import com.development.cookbot.repository.preference.PreferenceRepository;
 import com.development.cookbot.repository.user.UserRepository;
 import com.development.cookbot.service.client.AuthenticationService;
@@ -126,6 +129,56 @@ public class PreferenceService {
         }
 
         return associatePreferences(userPrincipalDto, cleanedPreferences);
+    }
+
+    public SettingDto getSettingByUserId() {
+        UserPrincipalDto userPrincipalDto = authenticationService.getPrincipal();
+        if(userPrincipalDto == null) {
+            throw new NotFoundException("User not found");
+        }
+
+        UserEntity userEntity = userRepository.findById(userPrincipalDto.getId()).get();
+        SettingEntity settingEntity = userEntity.getSetting();
+
+        return SettingDto.builder()
+                .darkMode(settingEntity.isDarkMode())
+                .language(settingEntity.getLanguage())
+                .nbPeople(settingEntity.getNbPeople())
+                .build();
+
+    }
+
+    public SettingDto updateSettingByUserId(SettingDto settingDto) {
+        UserPrincipalDto userPrincipalDto = authenticationService.getPrincipal();
+        if(userPrincipalDto == null) {
+            throw new NotFoundException("User not found");
+        }
+
+        UserEntity userEntity = userRepository.findById(userPrincipalDto.getId()).get();
+        SettingEntity settingEntity = userEntity.getSetting();
+
+
+        if (settingDto.getLanguage() != null) {
+            settingEntity.setLanguage(settingDto.getLanguage());
+        }
+
+        if (settingDto.getNbPeople() != null) {
+            settingEntity.setNbPeople(settingDto.getNbPeople());
+        }
+
+        if (settingDto.getDarkMode() != null ) { // si Boolean et pas boolean
+            settingEntity.setDarkMode(settingDto.getDarkMode());
+        }
+
+        userEntity.setSetting(settingEntity);
+        userRepository.save(userEntity);
+
+        return SettingDto.builder()
+                .nbPeople(userEntity.getSetting().getNbPeople())
+                .language(userEntity.getSetting().getLanguage())
+                .darkMode(userEntity.getSetting().isDarkMode())
+                .build();
+
     }
 
 }

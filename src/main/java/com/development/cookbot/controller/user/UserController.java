@@ -1,6 +1,7 @@
 package com.development.cookbot.controller.user;
 
 import com.development.cookbot.dto.preference.PreferenceDto;
+import com.development.cookbot.dto.setting.SettingDto;
 import com.development.cookbot.exception.utils.Response;
 import com.development.cookbot.service.preference.PreferenceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,4 +42,29 @@ public class UserController {
                 .build();
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/settings")
+    public ResponseEntity<Object> getUserSetting() {
+        SettingDto settingDto = preferenceService.getSettingByUserId();
+        Response<SettingDto> response = Response.<SettingDto>builder()
+                .responseCode(HttpStatus.OK.value())
+                .responseMessage("Operation done successfully")
+                .data(settingDto)
+                .success(true)
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/settings")
+    public ResponseEntity<Object> updateUserSetting(@RequestBody SettingDto settingDto) {
+        SettingDto settingDtoRes = preferenceService.updateSettingByUserId(settingDto);
+        Response<SettingDto> response = Response.<SettingDto>builder()
+                .responseCode(HttpStatus.OK.value())
+                .responseMessage("Operation done successfully")
+                .data(settingDtoRes)
+                .success(true)
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
 }

@@ -8,7 +8,22 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 [
-  { "allergen": "POMME" },
-  { "allergen": "PECHE" },
-  { "allergen": "POMME" }
+  { "allergen": "PECHE" }
 ]
+
+### GET setting by user id
+GET {{host}}:{{port}}/api/v1/user/settings
+Authorization: Bearer {{token}}
+
+
+### PUT setting for user id
+PUT {{host}}:{{port}}/api/v1/user/settings
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "darkMode": null,
+    "nbPeople": 3,
+    "language": null
+}
+

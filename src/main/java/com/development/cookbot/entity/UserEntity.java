@@ -45,6 +45,9 @@ public class UserEntity implements UserDetails {
     )
     private List<PreferenceEntity> preferences = new ArrayList<>();
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private SettingEntity setting;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));

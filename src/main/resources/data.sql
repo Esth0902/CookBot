@@ -25,6 +25,12 @@ INSERT INTO user_preferences (user_id, preference_id) VALUES
 (3, 2),
 (1, 5);
 
+-- Setting for user
+INSERT INTO settings (dark_mode,nb_people,user_id,language) VALUES
+(true, 2, 1, 'EN'),
+(false, 1, 2, 'FR'),
+(false, 1, 3, 'EN');
+
 -- Recipes for user1
 INSERT INTO recipes (id, name, duration_minutes, is_favorite, user_id) VALUES
 (1, 'Spaghetti Carbonara', 30, true, 1),
