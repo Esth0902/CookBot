@@ -1,5 +1,6 @@
 ### POST generate a recipe from ingrediens
-POST {{host}}:{{port}}/api/auth/recipe
+POST {{host}}:{{port}}/api/v1/ai/recipe
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -34,7 +35,8 @@ Content-Type: application/json
 
 
 ### POST generate recipe title from ingrediens
-POST {{host}}:{{port}}/api/auth/recipeTitle
+POST {{host}}:{{port}}/api/v1/ai/recipeTitle
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -69,7 +71,8 @@ Content-Type: application/json
 
 
 ### POST a image to image in order to recieve titles for recipe
-POST {{host}}:{{port}}/api/auth/recipeTitle/image
+POST {{host}}:{{port}}/api/v1/ai/recipeTitle/image
+Authorization: Bearer {{token}}
 Content-Type: multipart/form-data; boundary=----boundary
 
 ------boundary
@@ -81,7 +84,8 @@ Content-Type: image/png
 
 
 ### POST a image to image in order to recieve a FULL recipe
-POST {{host}}:{{port}}/api/auth/recipe/image
+POST {{host}}:{{port}}/api/v1/ai/recipe/image
+Authorization: Bearer {{token}}
 Content-Type: multipart/form-data; boundary=----boundary
 
 ------boundary

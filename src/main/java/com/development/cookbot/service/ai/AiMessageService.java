@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 @Service
-public class AiService {
+public class AiMessageService {
     public String formatQuery(AiRecipeInputDto aiRecipeInputDto) {
         String ingredientsList = aiRecipeInputDto.getIngredients().stream()
                 .map(ingredient -> "- "
