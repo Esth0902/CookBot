@@ -126,12 +126,12 @@ fetch('http://localhost:8080/api/v1/recipe', {
     durationMinutes: 45,
     isFavorite": false,
     ingredients: [
-      { name: "Flour", quantity: 500, unit: "g" },
-      { name: "Water", quantity: 250, unit: "ml" }
+      { name: "Flour", "quantity": 500, "unit": "g" },
+      { name: "Water", "quantity": 250, "unit": "ml" }
     ],
     steps: [
-      { stepNumber: 1, description: "Mix ingredients" },
-      { stepNumber: 2, description: "Bake for 30 minutes" }
+      { "stepNumber": 1, "description": "Mix ingredients" },
+      { "stepNumber": 2, "description": "Bake for 30 minutes" }
     ]
   })
 })
@@ -348,9 +348,9 @@ fetch('http://localhost:8080/api/auth/recipe', {
   },
   body: JSON.stringify({
     ingredients: [
-      { name: "Tomatoes", quantity: 4, unit: "units" },
-      { name: "Eggs", quantity: 4, unit: "units" },
-      { name: "Onion", quantity: 1, unit: "unit" }
+      { name: "Tomatoes", "quantity": 4, "unit": "units" },
+      { name: "Eggs", "quantity": 4, "unit": "units" },
+      { name: "Onion", "quantity": 1, "unit": "unit" }
     ]
   })
 })
@@ -389,8 +389,8 @@ fetch('http://localhost:8080/api/auth/recipeTitle', {
   },
   body: JSON.stringify({
     ingredients: [
-      { name: "Tomatoes", quantity: 4, unit: "units" },
-      { name: "Eggs", quantity: 4, unit: "units" }
+      { name: "Tomatoes", "quantity": 4, "unit": "units" },
+      { name: "Eggs", "quantity": 4, "unit": "units" }
     ]
   })
 })
@@ -449,6 +449,163 @@ fetch('http://localhost:8080/api/auth/recipe/image', {
     // 'Content-Type' header is set automatically by the browser with FormData
   },
   body: formData
+})
+.then(response => response.json())
+.then(data => console.log('Success:', data))
+.catch(error => console.error('Error:', error));
+```
+
+---
+
+## User Profile
+
+These endpoints manage user-specific settings and preferences.
+
+**Note**: All user profile endpoints require an `Authorization` header with a Bearer Token.
+
+### Get user preferences
+
+-   **Endpoint**: `GET /api/v1/user/preferences`
+-   **Description**: Retrieves the allergen preferences for the authenticated user.
+-   **Authorization**: `Bearer YOUR_JWT_TOKEN`
+
+**`fetch` Example:**
+
+```javascript
+const token = localStorage.getItem('jwtToken');
+
+fetch('http://localhost:8080/api/v1/user/preferences', {
+  method: 'GET',
+  headers: {
+    'Authorization': `Bearer ${token}`
+  }
+})
+.then(response => response.json())
+.then(data => console.log('Success:', data))
+.catch(error => console.error('Error:', error));
+```
+
+**Example Response Body:**
+```json
+{
+    "responseCode": 200,
+    "responseMessage": "Operation done successfully",
+    "data": [
+        {
+            "allergen": "Peanuts"
+        },
+        {
+            "allergen": "Gluten"
+        }
+    ],
+    "success": true
+}
+```
+
+### Set user preferences
+
+-   **Endpoint**: `POST /api/v1/user/preferences`
+-   **Description**: Sets the allergen preferences for the authenticated user. This will replace any existing preferences.
+-   **Authorization**: `Bearer YOUR_JWT_TOKEN`
+
+**Request Body:**
+
+```json
+[
+  { "allergen": "Peanuts" },
+  { "allergen": "Gluten" }
+]
+```
+
+**`fetch` Example:**
+
+```javascript
+const token = localStorage.getItem('jwtToken');
+
+fetch('http://localhost:8080/api/v1/user/preferences', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  },
+  body: JSON.stringify([
+    { "allergen": "Peanuts" },
+    { "allergen": "Gluten" }
+  ])
+})
+.then(response => response.json())
+.then(data => console.log('Success:', data))
+.catch(error => console.error('Error:', error));
+```
+
+### Get user settings
+
+-   **Endpoint**: `GET /api/v1/user/settings`
+-   **Description**: Retrieves the settings for the authenticated user.
+-   **Authorization**: `Bearer YOUR_JWT_TOKEN`
+
+**`fetch` Example:**
+
+```javascript
+const token = localStorage.getItem('jwtToken');
+
+fetch('http://localhost:8080/api/v1/user/settings', {
+  method: 'GET',
+  headers: {
+    'Authorization': `Bearer ${token}`
+  }
+})
+.then(response => response.json())
+.then(data => console.log('Success:', data))
+.catch(error => console.error('Error:', error));
+```
+
+**Example Response Body:**
+```json
+{
+    "responseCode": 200,
+    "responseMessage": "Operation done successfully",
+    "data": {
+        "darkMode": true,
+        "language": "EN",
+        "nbPeople": 2
+    },
+    "success": true
+}
+```
+
+### Update user settings
+
+-   **Endpoint**: `PUT /api/v1/user/settings`
+-   **Description**: Updates the settings for the authenticated user.
+-   **Authorization**: `Bearer YOUR_JWT_TOKEN`
+
+**Request Body:**
+
+```json
+{
+  "darkMode": true,
+  "language": "EN",
+  "nbPeople": 2
+}
+```
+
+**`fetch` Example:**
+
+```javascript
+const token = localStorage.getItem('jwtToken');
+
+fetch('http://localhost:8080/api/v1/user/settings', {
+  method: 'PUT',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  },
+  body: JSON.stringify({
+    "darkMode": true,
+    "language": "EN",
+    "nbPeople": 2
+  })
 })
 .then(response => response.json())
 .then(data => console.log('Success:', data))
