@@ -8,9 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 @Service
-public class AiService {
+public class AiMessageService {
     public String formatQuery(AiRecipeInputDto aiRecipeInputDto) {
         String ingredientsList = aiRecipeInputDto.getIngredients().stream()
                 .map(ingredient -> "- "
@@ -24,27 +23,6 @@ public class AiService {
         Crée une recette avec les ingrédients suivants :
         %s
         """.formatted(ingredientsList);
-    }
-
-    public List<Message> fewShotMessages() {
-        return List.of(
-                new UserMessage("""
-                        Crée une recette avec les ingrédients, quantités et unités suivantes :
-                        - Tranches de pain : 2 tranches de pain
-                        - Oeufs : 2
-                        - lait : 1 litre
-                        - Sucre : 50 grammes
-                        - Beurre : 100 grammes
-                        """),
-                new AssistantMessage("""
-                        Plat : pain perdu
-                        Temps de cuisson : 15 mn
-                        Etape 1 : Battez grossièrement les deux oeufs avec le lait et le sucre dans une assiette creuse. Coupez les toasts en deux dans le sens de la diagonale.
-                        Etape 2 : Trempez rapidement les demi-toasts dans le mélange ainsi obtenu (si vous les laissez trop longtemps, ils risquent de s'émietter).
-                        Etape 3 : Saisissez-les sur votre plus grande poêle dans laquelle vous aurez placé une noix de beurre, 1 mn environ de chaque coté.
-                        Etape 4 : Servez, la première fournée est prête, enchainez avec la suivante.
-                        """)
-        );
     }
 
     public String formatTitleQuery(AiRecipeInputDto aiRecipeInputDto) {
@@ -61,7 +39,71 @@ public class AiService {
         """.formatted(ingredientsList);
     }
 
-    public List<Message> fewShotRecipeMessagesFromImages() {
+
+    /**
+     * Exemples pour SYSTEM_PROMPT_RECIPE_FROM_TEXT
+     */
+    public List<Message> getFewShotExamples_RecipeFromText() {
+        return List.of(
+                new UserMessage("""
+                        Crée une recette avec les ingrédients, quantités et unités suivantes :
+                        - Tranches de pain : 2 tranches
+                        - Oeufs : 2
+                        - lait : 1 litre
+                        - Sucre : 50 grammes
+                        - Beurre : 100 grammes
+                        """),
+                new AssistantMessage("""
+                        {
+                          "name": "Pain perdu facile",
+                          "durationMinutes": 15,
+                          "ingredients": [
+                            { "name": "Tranches de pain", "quantity": 2, "unit": "tranches" },
+                            { "name": "Oeufs", "quantity": 2, "unit": "pièces" },
+                            { "name": "lait", "quantity": 100, "unit": "ml" },
+                            { "name": "Sucre", "quantity": 20, "unit": "g" },
+                            { "name": "Beurre", "quantity": 15, "unit": "g" }
+                          ],
+                          "steps": [
+                            { "stepNumber": 1, "description": "Dans une assiette creuse, battre les œufs avec le lait et le sucre." },
+                            { "stepNumber": 2, "description": "Tremper rapidement les tranches de pain des deux côtés dans le mélange." },
+                            { "stepNumber": 3, "description": "Faire fondre le beurre dans une poêle à feu moyen." },
+                            { "stepNumber": 4, "description": "Faire dorer les tranches de pain 2-3 minutes de chaque côté jusqu'à ce qu'elles soient bien dorées." },
+                            { "stepNumber": 5, "description": "Servir chaud, saupoudré d'un peu de sucre si désiré." }
+                          ]
+                        }
+                        """)
+        );
+    }
+
+    /**
+     * Exemples pour SYSTEM_PROMPT_TITLE_FROM_TEXT
+     */
+    public List<Message> getFewShotExamples_TitleFromText() {
+        return List.of(
+                new UserMessage("""
+                        Donne moi des noms de recettes avec leur temps de cuisson pour les ingrédients suivants :
+                        - Tranches de pain : 2 tranches
+                        - Oeufs : 2
+                        - lait : 1 litre
+                        - Sucre : 50 grammes
+                        - Beurre : 100 grammes
+                        """),
+                new AssistantMessage("""
+                        {
+                          "recipeTitles": [
+                            { "title": "Pain perdu", "durationMinutes": 15 },
+                            { "title": "Omelette sucrée au pain", "durationMinutes": 10 }
+                          ]
+                        }
+                        """)
+        );
+    }
+
+    /**
+     * Exemples pour SYSTEM_PROMPT_RECIPE_FROM_IMAGE
+     */
+    public List<Message> getFewShotExamples_RecipeFromImage() {
         return List.of(
                 new UserMessage("Image montrant des œufs, du pain et du lait."),
                 new AssistantMessage("""
@@ -101,26 +143,6 @@ public class AiService {
                   ]
                 }
             """)
-        );
-    }
-
-    public List<Message> fewShotRecipeTitleMessages() {
-        return List.of(
-                new UserMessage("""
-                        Donne moi des noms de recettes avec leur temps de cuisson pour les ingrédients suivants :
-                        - Tranches de pain : 2 tranches de pain
-                        - Oeufs : 2
-                        - lait : 1 litre
-                        - Sucre : 50 grammes
-                        - Beurre : 100 grammes
-                        """),
-                new AssistantMessage("""
-                        title : pain perdu
-                        Temps de cuisson : 15 mn
-                        
-                        title : omelette avec du pain
-                        Temps de cuisson : 10 mn
-                        """)
         );
     }
 }

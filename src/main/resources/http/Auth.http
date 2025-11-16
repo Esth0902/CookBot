@@ -12,6 +12,6 @@ POST {{host}}:{{port}}/api/auth/login
 Content-Type: application/json
 
 {
-  "username": "testuser",
+  "username": "userFree",
   "password": "password123"
 }
