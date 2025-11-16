@@ -1,0 +1,14 @@
+### GET preference by user id
+GET {{host}}:{{port}}/api/v1/user/preferences
+Authorization: Bearer {{token}}
+
+### POST add preferences
+POST {{host}}:{{port}}/api/v1/user/preferences
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+[
+  { "allergen": "POMME" },
+  { "allergen": "PECHE" },
+  { "allergen": "POMME" }
+]
