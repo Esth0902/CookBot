@@ -7,19 +7,19 @@ INSERT INTO users (username, password,role) VALUES
 ( 'userAdmin', '$2a$10$yt/HxLeVbRhwESRqb54P6O5N.9ku1I9arSOdyBvh8l1icgUiP1IrS','ADMIN');
 
 -- Recipes for user1
-INSERT INTO recipes (id, name, duration_minutes, is_favorite, user_id) VALUES
-(1, 'Spaghetti Carbonara', 30, true, 1),
-(2, 'Chicken Curry', 45, false, 1);
+INSERT INTO recipes (name, duration_minutes, is_favorite, user_id) VALUES
+('Spaghetti Carbonara', 30, true, 1),
+('Chicken Curry', 45, false, 1);
 
 -- Recipes for user2
-INSERT INTO recipes (id, name, duration_minutes, is_favorite, user_id) VALUES
-(3, 'Pancakes', 20, true, 2),
-(4, 'Beef Tacos', 35, true, 2);
+INSERT INTO recipes (name, duration_minutes, is_favorite, user_id) VALUES
+('Pancakes', 20, true, 2),
+('Beef Tacos', 35, true, 2);
 
 -- Recipes for admin
-INSERT INTO recipes (id, name, duration_minutes, is_favorite, user_id) VALUES
-(5, 'Chocolate Cake', 60, false, 3),
-(6, 'Vegetable Soup', 40, false, 3);
+INSERT INTO recipes (name, duration_minutes, is_favorite, user_id) VALUES
+('Chocolate Cake', 60, false, 3),
+('Vegetable Soup', 40, false, 3);
 
 -- Ingredients for Recipe 1 (Spaghetti Carbonara)
 INSERT INTO ingredients (recipe_id, name, quantity, unit) VALUES
