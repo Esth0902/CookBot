@@ -6,6 +6,31 @@ INSERT INTO users (username, password,role) VALUES
 ( 'userPremium', '$2a$10$yt/HxLeVbRhwESRqb54P6O5N.9ku1I9arSOdyBvh8l1icgUiP1IrS','PREMIUM'),
 ( 'userAdmin', '$2a$10$yt/HxLeVbRhwESRqb54P6O5N.9ku1I9arSOdyBvh8l1icgUiP1IrS','ADMIN');
 
+-- Préférence for user
+INSERT INTO preferences (allergen) VALUES
+('GLUTEN'),
+('LACTOSE'),
+('OEUF'),
+('ARACHIDE'),
+('FRUITS_COQUE'),
+('SOJA'),
+('CRUSTACE');
+
+-- Préférence for users
+INSERT INTO user_preferences (user_id, preference_id) VALUES
+(1, 1),
+(1, 2),
+(2, 3),
+(3, 4),
+(3, 2),
+(1, 5);
+
+-- Setting for user
+INSERT INTO settings (dark_mode,nb_people,user_id,language) VALUES
+(true, 2, 1, 'EN'),
+(false, 1, 2, 'FR'),
+(false, 1, 3, 'EN');
+
 -- Recipes for user1
 INSERT INTO recipes (name, duration_minutes, is_favorite, user_id) VALUES
 ('Spaghetti Carbonara', 30, true, 1),
