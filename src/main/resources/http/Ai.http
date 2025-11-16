@@ -1,4 +1,4 @@
-### POST recipe
+### POST generate a recipe from ingrediens
 POST {{host}}:{{port}}/api/auth/recipe
 Content-Type: application/json
 
@@ -33,7 +33,7 @@ Content-Type: application/json
 }
 
 
-### POST recipeTitle
+### POST generate recipe title from ingrediens
 POST {{host}}:{{port}}/api/auth/recipeTitle
 Content-Type: application/json
 

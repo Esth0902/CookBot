@@ -42,21 +42,23 @@ public class AIAgentController {
 
         byte[] bytes = file.getBytes();
         return chatClient.prompt()
-                .system(AiConstant.SYSTEM_MESSAGE_RECIPE_TITLE_V2)
+                .system(AiConstant.SYSTEM_PROMPT_TITLE_FROM_IMAGE)
                 .user(u -> u.
-                        text("Donne moi des noms de recette et son temps de cuisson sur base de l'image suivante :").
+                        text(AiConstant.SYSTEM_PROMPT_TITLE_FROM_IMAGE_MEDIA_TEXT).
                         media(MediaType.IMAGE_PNG, new ByteArrayResource(bytes))
                 ).call().entity(AiRecipeTitleResponseDto.class);
     }
 
     @PostMapping(value = "/recipe/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public AiRecipeResponseDto askRecipeFromImage(@RequestParam(name="file") MultipartFile file) throws IOException {
+
         byte[] bytes = file.getBytes();
-        List<Message> examples = aiService.fewShotRecipeMessagesFromImages();
+        List<Message> examples = aiService.getFewShotExamples_RecipeFromImage();
+
         return chatClient.prompt()
-                .system(AiConstant.SYSTEM_MESSAGE_RECIPE_V2)
+                .system(AiConstant.SYSTEM_PROMPT_RECIPE_FROM_IMAGE)
                 .messages(examples)
-                .user(u -> u.text("Donne mois une recette complète sur base de l'image suivante :").
+                .user(u -> u.text(AiConstant.SYSTEM_PROMPT_RECIPE_FROM_IMAGE_MEDIA_TEXT).
                         media(MediaType.IMAGE_PNG, new ByteArrayResource(bytes))
                 ).call().entity(AiRecipeResponseDto.class);
     }
@@ -70,11 +72,12 @@ public class AIAgentController {
 
     @PostMapping("/recipeTitle")
     public AiRecipeTitleResponseDto askRecipeTitle(@RequestBody AiRecipeInputDto aiRecipeInputDto) {
+
         String query = aiService.formatTitleQuery(aiRecipeInputDto);
-        List<Message> examples = aiService.fewShotRecipeTitleMessages();
+        List<Message> examples = aiService.getFewShotExamples_TitleFromText();
 
         return chatClient.prompt()
-                .system(AiConstant.SYSTEM_MESSAGE_RECIPE_TITLE)
+                .system(AiConstant.SYSTEM_PROMPT_TITLE_FROM_TEXT)
                 .messages(examples)
                 .user(query)
                 .call()
@@ -85,10 +88,10 @@ public class AIAgentController {
     public AiRecipeResponseDto askForRecipe(@RequestBody AiRecipeInputDto aiRecipeInputDto) {
 
         String query = aiService.formatQuery(aiRecipeInputDto);
-        List<Message> examples = aiService.fewShotMessages();
+        List<Message> examples = aiService.getFewShotExamples_RecipeFromText();
 
         return chatClient.prompt()
-                .system(AiConstant.SYSTEM_MESSAGE)
+                .system(AiConstant.SYSTEM_PROMPT_RECIPE_FROM_TEXT)
                 .messages(examples)
                 .user(query)
                 .call()
