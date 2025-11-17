@@ -10,3 +10,9 @@ DB_NAME=
 DB_PASSWORD=
 JWT_TOKEN=
 JWT_EXPIRATION=
+
+#### GRAFANA ###
+
+Prometheus => http://localhost:8080/actuator/prometheus
+
+Grafana => http://localhost:3000
