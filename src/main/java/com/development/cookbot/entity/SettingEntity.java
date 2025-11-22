@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -21,8 +23,10 @@ public class SettingEntity {
     @Enumerated(EnumType.STRING)
     private Language language;
     private int nbPeople;
+    private int requestQuantity;
+    private LocalDate lastRequestDate;
 
     @OneToOne
-    @JoinColumn(name = "user_id", unique = true) // FK vers user
+    @JoinColumn(name = "user_id", unique = true)
     private UserEntity user;
 }

@@ -26,10 +26,10 @@ INSERT INTO user_preferences (user_id, preference_id) VALUES
 (1, 5);
 
 -- Setting for user
-INSERT INTO settings (dark_mode,nb_people,user_id,language) VALUES
-(true, 2, 1, 'EN'),
-(false, 1, 2, 'FR'),
-(false, 1, 3, 'EN');
+INSERT INTO settings (dark_mode,nb_people,user_id,language,request_quantity,last_request_date) VALUES
+(true, 2, 1, 'EN',0,'2025-08-01'),
+(false, 1, 2, 'FR',0, '2025-09-10'),
+(false, 1, 3, 'EN',0 ,'2025-10-01');
 
 -- Recipes for user1
 INSERT INTO recipes (name, duration_minutes, is_favorite, user_id) VALUES

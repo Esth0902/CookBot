@@ -2,7 +2,9 @@ package com.development.cookbot.service.authentication;
 
 import com.development.cookbot.dto.authentication.LoginDto;
 import com.development.cookbot.dto.authentication.RegisterDto;
+import com.development.cookbot.entity.Language;
 import com.development.cookbot.entity.Role;
+import com.development.cookbot.entity.SettingEntity;
 import com.development.cookbot.entity.UserEntity;
 import com.development.cookbot.repository.user.UserRepository;
 import com.development.cookbot.security.JwtTokenProvider;
@@ -13,6 +15,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 
 @Service
 @AllArgsConstructor
@@ -44,6 +48,16 @@ public class AuthServiceImpl implements AuthService {
         user.setUsername(registerDto.getUsername());
         user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
         user.setRole(Role.FREE);
+
+        SettingEntity setting = SettingEntity.builder()
+                .requestQuantity(0)
+                .darkMode(false)
+                .language(Language.FR)
+                .nbPeople(2)
+                .lastRequestDate(LocalDate.now())
+                .user(user)
+                .build();
+        user.setSetting(setting);
 
         userRepository.save(user);
 

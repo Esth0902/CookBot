@@ -16,6 +16,7 @@ public class AuthenticationService
                 .id(userDetails.getId())
                 .username(userDetails.getUsername())
                 .role(userDetails.getRole().name())
+                .setting(userDetails.getSetting())
                 .build();
     }
 }
