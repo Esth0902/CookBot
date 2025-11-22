@@ -10,13 +10,11 @@ import com.development.cookbot.exception.NotFoundException;
 import com.development.cookbot.repository.preference.PreferenceRepository;
 import com.development.cookbot.repository.user.UserRepository;
 import com.development.cookbot.service.client.AuthenticationService;
+import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,10 +53,8 @@ public class PreferenceService {
 
     }
 
-    private List<PreferenceDto> associatePreferences(
-            UserPrincipalDto userPrincipalDto,
-            List<PreferenceDto> preferenceDtoInput
-    ) {
+    private List<PreferenceDto> associatePreferences(UserPrincipalDto userPrincipalDto, List<PreferenceDto> preferenceDtoInput)
+    {
 
         UserEntity userEntity = userRepository.findById(userPrincipalDto.getId()).get();
 
@@ -95,6 +91,42 @@ public class PreferenceService {
         return getPreferenceByUserId();
     }
 
+//    public List<PreferenceDto> createPreferenceByUserId(List<PreferenceDto> preferenceDtoInput) {
+//        UserPrincipalDto userPrincipalDto = authenticationService.getPrincipal();
+//
+//        if (userPrincipalDto == null) {
+//            throw new RuntimeException("User not found");
+//        }
+//
+//        // Récupère les préférences existantes dans la DB
+//        Map<String, PreferenceEntity> persistedByName =
+//                preferenceRepository.findAll().stream()
+//                        .collect(Collectors.toMap(PreferenceEntity::getAllergen, p -> p));
+//
+//        List<PreferenceDto> cleanedPreferences = new ArrayList<>();
+//
+//        // Crée les préférences inexistantes en DB
+//        for (PreferenceDto dto : preferenceDtoInput) {
+//
+//            String allergen = dto.getAllergen();
+//            PreferenceEntity existing = persistedByName.get(allergen);
+//
+//            if (existing == null) {
+//                // On la crée
+//                existing = preferenceRepository.save(
+//                        PreferenceEntity.builder()
+//                                .allergen(allergen)
+//                                .build()
+//                );
+//                persistedByName.put(allergen, existing);
+//            }
+//
+//            cleanedPreferences.add(dto); // On garde toutes les préférences demandées
+//        }
+//
+//        return associatePreferences(userPrincipalDto, cleanedPreferences);
+//    }
+
     public List<PreferenceDto> createPreferenceByUserId(List<PreferenceDto> preferenceDtoInput) {
         UserPrincipalDto userPrincipalDto = authenticationService.getPrincipal();
 
@@ -108,24 +140,39 @@ public class PreferenceService {
                         .collect(Collectors.toMap(PreferenceEntity::getAllergen, p -> p));
 
         List<PreferenceDto> cleanedPreferences = new ArrayList<>();
+        final int LEVENSHTEIN_TOLERANCE = 2; // Seuil de tolérance (ajustez selon vos besoins)
 
         // Crée les préférences inexistantes en DB
         for (PreferenceDto dto : preferenceDtoInput) {
 
-            String allergen = dto.getAllergen();
-            PreferenceEntity existing = persistedByName.get(allergen);
+            String inputAllergen = dto.getAllergen();
+            PreferenceEntity existing = null;
 
-            if (existing == null) {
-                // On la crée
-                existing = preferenceRepository.save(
-                        PreferenceEntity.builder()
-                                .allergen(allergen)
-                                .build()
-                );
-                persistedByName.put(allergen, existing);
+            // 1. Recherche de la préférence existante la plus proche (Levenshtein)
+            Optional<PreferenceEntity> closestMatch = findClosestPreference(
+                    inputAllergen,
+                    persistedByName,
+                    LEVENSHTEIN_TOLERANCE
+            );
+
+            if (closestMatch.isPresent()) {
+                existing = closestMatch.get();
+                // Optionnel: Mettre à jour le DTO pour qu'il corresponde au nom standardisé en DB
+                dto.setAllergen(existing.getAllergen());
             }
 
-            cleanedPreferences.add(dto); // On garde toutes les préférences demandées
+            if (existing == null) {
+                // 2. Si aucune correspondance proche n'est trouvée, on la crée
+                existing = preferenceRepository.save(
+                        PreferenceEntity.builder()
+                                .allergen(inputAllergen)
+                                .build()
+                );
+                // Ajouter à la map pour les vérifications suivantes dans la même boucle
+                persistedByName.put(inputAllergen, existing);
+            }
+
+            cleanedPreferences.add(dto); // On ajoute l'objet (potentiellement modifié avec le nom standardisé)
         }
 
         return associatePreferences(userPrincipalDto, cleanedPreferences);
@@ -179,6 +226,31 @@ public class PreferenceService {
                 .darkMode(userEntity.getSetting().isDarkMode())
                 .build();
 
+    }
+
+    private Optional<PreferenceEntity> findClosestPreference(String inputAllergen, Map<String, PreferenceEntity> persistedByName, int maxDistance) {
+        LevenshteinDistance distance = new LevenshteinDistance();
+        int minDistance = Integer.MAX_VALUE;
+        PreferenceEntity closestMatch = null;
+
+        for (String persistedAllergen : persistedByName.keySet()) {
+            int currentDistance = distance.apply(inputAllergen, persistedAllergen);
+
+            if (currentDistance == 0) {
+                return Optional.of(persistedByName.get(persistedAllergen));
+            }
+
+            if (currentDistance < minDistance) {
+                minDistance = currentDistance;
+                closestMatch = persistedByName.get(persistedAllergen);
+            }
+        }
+
+        if (minDistance <= maxDistance) {
+            return Optional.of(closestMatch);
+        }
+
+        return Optional.empty();
     }
 
 }
