@@ -1,0 +1,8 @@
+### POST Embedding
+POST {{host}}:{{port}}/api/auth/demo/compare
+Content-Type: application/json
+
+{
+  "listA": ["voiture", "automobile", "chat", "ordinateur","dog"],
+  "listB": ["car", "pc", "cat"]
+}
