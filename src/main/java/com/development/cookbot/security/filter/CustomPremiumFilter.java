@@ -3,6 +3,7 @@ package com.development.cookbot.security.filter;
 import com.development.cookbot.dto.client.UserPrincipalDto;
 import com.development.cookbot.entity.UserEntity;
 import com.development.cookbot.repository.user.UserRepository;
+import com.development.cookbot.security.constant.AiApiUrl;
 import com.development.cookbot.service.client.AuthenticationService;
 import com.development.cookbot.service.user.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,11 +34,10 @@ public class CustomPremiumFilter extends OncePerRequestFilter {
     protected UserService userService;
 
     private static final Set<String> PROTECTED_ENDPOINTS = Set.of(
-//            "/api/v1/ai/recipe",
-//            "/api/v1/ai/recipeTitle",
-//            "/api/v1/ai/recipeTitle/image",
-//            "/api/v1/ai/recipe/image"
-            "/api/v1/recipe/all"
+            AiApiUrl.AI_URL_RECIPE,
+            AiApiUrl.AI_URL_RECIPE_TITLE,
+            AiApiUrl.AI_URL_RECIPE_TITLE_IMAGE,
+            AiApiUrl.AI_URL_RECIPE_IMAGE
     );
     @Autowired
     private UserRepository userRepository;
@@ -82,6 +82,7 @@ public class CustomPremiumFilter extends OncePerRequestFilter {
 
             final ObjectMapper mapper = new ObjectMapper();
             mapper.writeValue(response.getOutputStream(), body);
+            return;
         }
 
         // --- 3) Incrément du compteur ---
