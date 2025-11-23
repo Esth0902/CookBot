@@ -1,5 +1,6 @@
 package com.development.cookbot.service.ai;
 
+import com.development.cookbot.dto.ai.AiDishInputDto;
 import com.development.cookbot.dto.ai.AiRecipeInputDto;
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.Message;
@@ -38,6 +39,42 @@ public class AiMessageService {
         %s
         """.formatted(ingredientsList);
     }
+
+    public String formatQueryDish(AiDishInputDto aiDishInputDto) {
+        return """
+        Donne moi la recette avec les ingrédients et les étapes pour le plat suivants : %s
+        """.formatted(aiDishInputDto);
+    }
+
+    public List<Message> getFewShotExamples_RecipeFromDish() {
+        return List.of(
+                new UserMessage("""
+                    Donne moi une recette pour moi préparer le plat suivant : omelette au fromage.
+                    """),
+                new AssistantMessage("""
+                    {
+                      "name": "Omelette au fromage",
+                      "durationMinutes": 10,
+                      "ingredients": [
+                        { "name": "Oeufs", "quantity": 3, "unit": "pièces" },
+                        { "name": "Fromage râpé", "quantity": 50, "unit": "g" },
+                        { "name": "Beurre", "quantity": 10, "unit": "g" },
+                        { "name": "Sel", "quantity": 1, "unit": "pincée" },
+                        { "name": "Poivre", "quantity": 1, "unit": "pincée" }
+                      ],
+                      "steps": [
+                        { "stepNumber": 1, "description": "Casser les œufs dans un bol et les battre avec le sel et le poivre." },
+                        { "stepNumber": 2, "description": "Faire fondre le beurre dans une poêle à feu moyen." },
+                        { "stepNumber": 3, "description": "Verser les œufs battus dans la poêle et laisser cuire quelques secondes." },
+                        { "stepNumber": 4, "description": "Ajouter le fromage râpé sur la surface encore légèrement liquide." },
+                        { "stepNumber": 5, "description": "Replier l'omelette en deux et laisser cuire encore 1 à 2 minutes jusqu'à ce que le fromage soit fondu." },
+                        { "stepNumber": 6, "description": "Servir chaud immédiatement." }
+                      ]
+                    }
+                    """)
+        );
+    }
+
 
 
     /**

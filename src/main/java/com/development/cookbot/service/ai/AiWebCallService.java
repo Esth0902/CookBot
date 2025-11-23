@@ -1,5 +1,6 @@
 package com.development.cookbot.service.ai;
 
+import com.development.cookbot.dto.ai.AiDishInputDto;
 import com.development.cookbot.dto.ai.AiRecipeInputDto;
 import com.development.cookbot.dto.ai.AiRecipeResponseDto;
 import com.development.cookbot.dto.ai.AiRecipeTitleResponseDto;
@@ -121,6 +122,30 @@ public class AiWebCallService {
         }
 
         return aiRecipeResponseDto;
+    }
+
+    public AiRecipeResponseDto askRecipeFromDish(AiDishInputDto aiDishInputDto) {
+        UserPrincipalDto userPrincipalDto = authenticationService.getPrincipal();
+
+        if(userPrincipalDto == null) {
+            throw new NotFoundException("User not found");
+        }
+
+        int nbPeople = userRepository.findById(userPrincipalDto.getId()).get().getSetting().getNbPeople();
+
+        if(nbPeople < 1) {
+            throw new RuntimeException("You must have at least 1 person to make a recipe");
+        }
+
+        String query = aiMessageService.formatQueryDish(aiDishInputDto);
+        List<Message> examples = aiMessageService.getFewShotExamples_RecipeFromDish();
+
+        return chatClient.prompt()
+                .system(AiConstant.SYSTEM_PROMPT_RECIPE_FROM_DISH_TEXT)
+                .messages(examples)
+                .user(query)
+                .call()
+                .entity(AiRecipeResponseDto.class);
     }
 
     public AiRecipeTitleResponseDto askRecipeTitleFromImage(byte[] bytes) {

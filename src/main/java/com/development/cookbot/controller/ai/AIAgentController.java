@@ -1,5 +1,6 @@
 package com.development.cookbot.controller.ai;
 
+import com.development.cookbot.dto.ai.AiDishInputDto;
 import com.development.cookbot.dto.ai.AiRecipeInputDto;
 import com.development.cookbot.dto.ai.AiRecipeResponseDto;
 import com.development.cookbot.dto.ai.AiRecipeTitleResponseDto;
@@ -65,6 +66,19 @@ public class AIAgentController {
     public ResponseEntity<Object> askForRecipe(@RequestBody AiRecipeInputDto aiRecipeInputDto) {
 
         AiRecipeResponseDto aiRecipeResponseDto = aiWebCallService.askForRecipe(aiRecipeInputDto);
+        Response<AiRecipeResponseDto> response = Response.<AiRecipeResponseDto>builder()
+                .responseCode(HttpStatus.OK.value())
+                .responseMessage("Operation done successfully")
+                .data(aiRecipeResponseDto)
+                .success(true)
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/dish")
+    public ResponseEntity<Object> askRecipeFromDish(@RequestBody AiDishInputDto aiDishInputDto) {
+
+        AiRecipeResponseDto aiRecipeResponseDto = aiWebCallService.askRecipeFromDish(aiDishInputDto);
         Response<AiRecipeResponseDto> response = Response.<AiRecipeResponseDto>builder()
                 .responseCode(HttpStatus.OK.value())
                 .responseMessage("Operation done successfully")

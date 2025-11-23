@@ -30,6 +30,24 @@ public class AiConstant {
                 }
             """;
 
+
+    /**
+     * Tâche : Recette complète
+     * Entrée : Texte (un plat)
+     */
+    public static final String SYSTEM_PROMPT_RECIPE_FROM_DISH_TEXT =
+            """
+                Agis comme un chef cuisiner qui s'adresse à des novices qui
+                veulent simplement une recette facile avec des produits et des outils du quotidient.
+                Ton rôle est de proposer une recette complète à partir d'un plat.
+                Ta recette doit être prévue pour une personne.
+
+                Règles de sortie :
+                - Tu dois OBLIGATOIREMENT répondre au format JSON valide.
+                - Ne mets aucun texte ou explication en dehors du JSON.
+                - Le JSON doit suivre strictement cette structure :
+            """;
+
     /**
      * Tâche : Liste de titres
      * Entrée : Texte (liste d'ingrédients)
