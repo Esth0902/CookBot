@@ -1,9 +1,6 @@
 package com.development.cookbot.service.ai;
 
-import com.development.cookbot.dto.ai.AiDishInputDto;
-import com.development.cookbot.dto.ai.AiRecipeInputDto;
-import com.development.cookbot.dto.ai.AiRecipeResponseDto;
-import com.development.cookbot.dto.ai.AiRecipeTitleResponseDto;
+import com.development.cookbot.dto.ai.*;
 import com.development.cookbot.dto.client.UserPrincipalDto;
 import com.development.cookbot.exception.NotFoundException;
 import com.development.cookbot.repository.user.UserRepository;
@@ -53,6 +50,19 @@ public class AiWebCallService {
                 .user(query)
                 .call()
                 .entity(AiRecipeTitleResponseDto.class);
+    }
+
+    public AiSeasonRecipeDto askRecipeAccordingToSeason() {
+
+        String query = aiMessageService.formatQueryForSeasonRecipe();
+        List<Message> examples = aiMessageService.getFewShotExamples_SeasonRecipe();
+
+        return chatClient.prompt()
+                .system(AiConstant.SYSTEM_PROMPT_SEASON_RECIPE)
+                .messages(examples)
+                .user(query)
+                .call()
+                .entity(AiSeasonRecipeDto.class);
     }
 
     public AiRecipeResponseDto askForRecipe(AiRecipeInputDto aiRecipeInputDto) {

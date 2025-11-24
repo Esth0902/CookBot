@@ -40,6 +40,14 @@ public class AiMessageService {
         """.formatted(ingredientsList);
     }
 
+    public String formatQueryForSeasonRecipe() {
+        return """
+            Crée-moi une recette utilisant uniquement des produits de saison.
+            Donne-moi également jusqu’à 8 conseils variés concernant la préparation, la cuisson ou l’assaisonnement du plat.
+            """;
+    }
+
+
     public String formatQueryDish(AiDishInputDto aiDishInputDto) {
         return """
         Donne moi la recette avec les ingrédients et les étapes pour le plat suivants : %s
@@ -182,4 +190,58 @@ public class AiMessageService {
             """)
         );
     }
+
+    public List<Message> getFewShotExamples_SeasonRecipe() {
+        return List.of(
+        new UserMessage("Produits de saison visibles : poireaux, pommes de terre et carottes."),
+        new AssistantMessage("""
+        {
+          "name": "Potée de légumes d'hiver",
+          "durationMinutes": 40,
+          "ingredients": [
+            { "name": "poireaux", "quantity": 2, "unit": "pièces" },
+            { "name": "pommes de terre", "quantity": 4, "unit": "pièces" },
+            { "name": "carottes", "quantity": 3, "unit": "pièces" },
+            { "name": "bouillon de légumes", "quantity": 750, "unit": "ml" },
+            { "name": "huile d'olive", "quantity": 15, "unit": "ml" }
+          ],
+          "steps": [
+            { "stepNumber": 1, "description": "Couper tous les légumes en morceaux." },
+            { "stepNumber": 2, "description": "Faire revenir les poireaux dans l'huile d'olive." },
+            { "stepNumber": 3, "description": "Ajouter les carottes, les pommes de terre et le bouillon." },
+            { "stepNumber": 4, "description": "Laisser mijoter 30 minutes à feu doux." }
+          ],
+          "tips": [
+            { "tips": ["Utiliser un bouillon maison pour plus de saveur.", "Ajouter une pointe de moutarde en fin de cuisson."] },
+            { "tips": ["Servir avec du pain grillé pour plus de texture."] }
+          ]
+        }
+        """),
+        new UserMessage("Produits de saison visibles : épinards, champignons et oignons."),
+        new AssistantMessage("""
+        {
+          "name": "Poêlée d'épinards et champignons",
+          "durationMinutes": 15,
+          "ingredients": [
+            { "name": "épinards frais", "quantity": 200, "unit": "g" },
+            { "name": "champignons de Paris", "quantity": 150, "unit": "g" },
+            { "name": "oignon", "quantity": 1, "unit": "pièce" },
+            { "name": "huile d'olive", "quantity": 10, "unit": "ml" },
+            { "name": "sel", "quantity": 2, "unit": "g" }
+          ],
+          "steps": [
+            { "stepNumber": 1, "description": "Émincer l’oignon et les champignons." },
+            { "stepNumber": 2, "description": "Faire revenir l’oignon dans l’huile d’olive." },
+            { "stepNumber": 3, "description": "Ajouter les champignons et laisser dorer." },
+            { "stepNumber": 4, "description": "Ajouter les épinards et les faire tomber 2 minutes." }
+          ],
+          "tips": [
+            { "tips": ["Ajouter un filet de crème pour une version plus onctueuse."] },
+            { "tips": ["Assaisonner avec un peu de noix de muscade."] }
+          ]
+        }
+        """)
+        );
+    }
+
 }

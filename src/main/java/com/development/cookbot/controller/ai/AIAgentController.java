@@ -1,9 +1,6 @@
 package com.development.cookbot.controller.ai;
 
-import com.development.cookbot.dto.ai.AiDishInputDto;
-import com.development.cookbot.dto.ai.AiRecipeInputDto;
-import com.development.cookbot.dto.ai.AiRecipeResponseDto;
-import com.development.cookbot.dto.ai.AiRecipeTitleResponseDto;
+import com.development.cookbot.dto.ai.*;
 import com.development.cookbot.exception.utils.Response;
 import com.development.cookbot.service.ai.AiWebCallService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +80,26 @@ public class AIAgentController {
                 .responseCode(HttpStatus.OK.value())
                 .responseMessage("Operation done successfully")
                 .data(aiRecipeResponseDto)
+                .success(true)
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
+
+//    @PreAuthorize("hasAnyAuthority('PREMIUM')")
+//    @GetMapping(value = "/demo")
+//    public String askRecipeDemo() throws IOException {
+//        return "Hello there";
+//    }
+
+    @GetMapping(value = "/recipe/season")
+    public ResponseEntity<Object> askRecipeAccordingToSeason() throws IOException {
+
+        AiSeasonRecipeDto aiSeasonRecipeDto = aiWebCallService.askRecipeAccordingToSeason();
+        Response<AiSeasonRecipeDto> response = Response.<AiSeasonRecipeDto>builder()
+                .responseCode(HttpStatus.OK.value())
+                .responseMessage("Operation done successfully")
+                .data(aiSeasonRecipeDto)
                 .success(true)
                 .build();
         return ResponseEntity.ok(response);
