@@ -11,6 +11,14 @@ Content-Type: application/json
   { "allergen": "PECHE" }
 ]
 
+### DELETE preference for a user by preference name
+DELETE {{host}}:{{port}}/api/v1/user/preference/name/GLUTEN
+Authorization: Bearer {{token}}
+
+### DELETE preference for a user by preference id
+DELETE {{host}}:{{port}}/api/v1/user/preference/id/2
+Authorization: Bearer {{token}}
+
 ### GET setting by user id
 GET {{host}}:{{port}}/api/v1/user/settings
 Authorization: Bearer {{token}}

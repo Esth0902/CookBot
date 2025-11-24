@@ -43,6 +43,30 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    @DeleteMapping("/preference/name/{preferenceName}")
+    public ResponseEntity<Object> deleteUserPreferencesByName(@PathVariable PreferenceDto preferenceName) {
+        List<PreferenceDto> preferenceDtoRes = preferenceService.deleteUserPreferenceByName(preferenceName);
+        Response<List<PreferenceDto>> response = Response.<List<PreferenceDto>>builder()
+                .responseCode(HttpStatus.OK.value())
+                .responseMessage("Operation done successfully")
+                .data(preferenceDtoRes)
+                .success(true)
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/preference/id/{preferenceIdToDelete}")
+    public ResponseEntity<Object> deleteUserPreferencesByName(@PathVariable Long preferenceIdToDelete) {
+        List<PreferenceDto> preferenceDtoRes = preferenceService.deleteUserPreferenceById(preferenceIdToDelete);
+        Response<List<PreferenceDto>> response = Response.<List<PreferenceDto>>builder()
+                .responseCode(HttpStatus.OK.value())
+                .responseMessage("Operation done successfully")
+                .data(preferenceDtoRes)
+                .success(true)
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/settings")
     public ResponseEntity<Object> getUserSetting() {
         SettingDto settingDto = preferenceService.getSettingByUserId();

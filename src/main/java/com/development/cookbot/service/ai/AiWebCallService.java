@@ -72,22 +72,12 @@ public class AiWebCallService {
         String query = aiMessageService.formatQuery(aiRecipeInputDto);
         List<Message> examples = aiMessageService.getFewShotExamples_RecipeFromText();
 
-        AiRecipeResponseDto aiRecipeResponseDto = chatClient.prompt()
+        return chatClient.prompt()
                 .system(AiConstant.SYSTEM_PROMPT_RECIPE_FROM_TEXT)
                 .messages(examples)
                 .user(query)
                 .call()
                 .entity(AiRecipeResponseDto.class);
-
-        if(nbPeople > 1) {
-            assert aiRecipeResponseDto != null;
-            aiRecipeResponseDto.getIngredients().forEach(ingredient -> {
-                double newQty = ingredient.getQuantity() * nbPeople;
-                ingredient.setQuantity(newQty);
-            });
-        }
-
-        return aiRecipeResponseDto;
     }
 
     public AiRecipeResponseDto askRecipeFromImage(byte[] bytes) {
@@ -106,22 +96,12 @@ public class AiWebCallService {
 
         List<Message> examples = aiMessageService.getFewShotExamples_RecipeFromImage();
 
-        AiRecipeResponseDto aiRecipeResponseDto = chatClient.prompt()
+        return chatClient.prompt()
                 .system(AiConstant.SYSTEM_PROMPT_RECIPE_FROM_IMAGE)
                 .messages(examples)
                 .user(u -> u.text(AiConstant.SYSTEM_PROMPT_RECIPE_FROM_IMAGE_MEDIA_TEXT).
                         media(MediaType.IMAGE_PNG, new ByteArrayResource(bytes))
                 ).call().entity(AiRecipeResponseDto.class);
-
-        if(nbPeople > 1) {
-            assert aiRecipeResponseDto != null;
-            aiRecipeResponseDto.getIngredients().forEach(ingredient -> {
-                double newQty = ingredient.getQuantity() * nbPeople;
-                ingredient.setQuantity(newQty);
-            });
-        }
-
-        return aiRecipeResponseDto;
     }
 
     public AiRecipeResponseDto askRecipeFromDish(AiDishInputDto aiDishInputDto) {

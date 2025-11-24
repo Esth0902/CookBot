@@ -91,41 +91,36 @@ public class PreferenceService {
         return getPreferenceByUserId();
     }
 
-//    public List<PreferenceDto> createPreferenceByUserId(List<PreferenceDto> preferenceDtoInput) {
-//        UserPrincipalDto userPrincipalDto = authenticationService.getPrincipal();
-//
-//        if (userPrincipalDto == null) {
-//            throw new RuntimeException("User not found");
-//        }
-//
-//        // Récupère les préférences existantes dans la DB
-//        Map<String, PreferenceEntity> persistedByName =
-//                preferenceRepository.findAll().stream()
-//                        .collect(Collectors.toMap(PreferenceEntity::getAllergen, p -> p));
-//
-//        List<PreferenceDto> cleanedPreferences = new ArrayList<>();
-//
-//        // Crée les préférences inexistantes en DB
-//        for (PreferenceDto dto : preferenceDtoInput) {
-//
-//            String allergen = dto.getAllergen();
-//            PreferenceEntity existing = persistedByName.get(allergen);
-//
-//            if (existing == null) {
-//                // On la crée
-//                existing = preferenceRepository.save(
-//                        PreferenceEntity.builder()
-//                                .allergen(allergen)
-//                                .build()
-//                );
-//                persistedByName.put(allergen, existing);
-//            }
-//
-//            cleanedPreferences.add(dto); // On garde toutes les préférences demandées
-//        }
-//
-//        return associatePreferences(userPrincipalDto, cleanedPreferences);
-//    }
+
+    public List<PreferenceDto> deleteUserPreferenceByName(PreferenceDto preferenceDtoInput) {
+        UserPrincipalDto userPrincipalDto = authenticationService.getPrincipal();
+        if(userPrincipalDto == null) {
+            throw new NotFoundException("User not found");
+        }
+
+        UserEntity userEntity = userRepository.findById(userPrincipalDto.getId()).get();
+        userEntity.getPreferences().removeIf(preferenceEntity -> preferenceEntity.getAllergen().equals(preferenceDtoInput.getAllergen()));
+        userRepository.save(userEntity);
+
+        return this.getPreferenceByUserId();
+    }
+
+    public List<PreferenceDto> deleteUserPreferenceById(Long preferenceIdToDelete) {
+        UserPrincipalDto userPrincipalDto = authenticationService.getPrincipal();
+        PreferenceEntity preferenceEntityToDelete = preferenceRepository.findById(preferenceIdToDelete).orElseThrow(() -> new RuntimeException("Preference not found with id: " + preferenceIdToDelete));
+
+        if(userPrincipalDto == null) {
+            throw new NotFoundException("User not found");
+        }
+
+        UserEntity userEntity = userRepository.findById(userPrincipalDto.getId()).get();
+        userEntity.getPreferences()
+                .removeIf(preferenceEntity -> preferenceEntity.getAllergen()
+                        .equals(preferenceEntityToDelete.getAllergen()));
+        userRepository.save(userEntity);
+
+        return this.getPreferenceByUserId();
+    }
 
     public List<PreferenceDto> createPreferenceByUserId(List<PreferenceDto> preferenceDtoInput) {
         UserPrincipalDto userPrincipalDto = authenticationService.getPrincipal();
