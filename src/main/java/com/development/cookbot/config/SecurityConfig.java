@@ -2,6 +2,7 @@ package com.development.cookbot.config;
 
 import com.development.cookbot.security.JwtAuthenticationFilter;
 import com.development.cookbot.security.filter.CustomPremiumFilter;
+import com.development.cookbot.security.filter.CustomTrialFilter;
 import com.development.cookbot.security.jwt.AuthEntryPointJwt;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class SecurityConfig {
     @Autowired
     private CustomPremiumFilter customPremiumFilter;
 
+    @Autowired
+    private CustomTrialFilter customTrialFilter;
+
     @Bean
     public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -58,6 +62,7 @@ public class SecurityConfig {
 
         http.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterAfter(customPremiumFilter, JwtAuthenticationFilter.class);
+        http.addFilterAfter(customTrialFilter, CustomPremiumFilter.class);
 
         return http.build();
     }

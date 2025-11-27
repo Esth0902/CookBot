@@ -25,6 +25,8 @@ public class SettingEntity {
     private int nbPeople;
     private int requestQuantity;
     private LocalDate lastRequestDate;
+    private LocalDate endedTrialDate;
+    private boolean isTrial;
 
     @OneToOne
     @JoinColumn(name = "user_id", unique = true)

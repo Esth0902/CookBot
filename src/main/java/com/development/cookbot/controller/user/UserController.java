@@ -91,4 +91,16 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/trial")
+    public ResponseEntity<Object> switchToTrial() {
+        String trialResponse = preferenceService.switchToTrial();
+        Response<String> response = Response.<String>builder()
+                .responseCode(HttpStatus.OK.value())
+                .responseMessage("Operation done successfully")
+                .data(trialResponse)
+                .success(true)
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
 }

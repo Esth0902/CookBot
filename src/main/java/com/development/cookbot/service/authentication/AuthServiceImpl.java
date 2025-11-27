@@ -55,6 +55,7 @@ public class AuthServiceImpl implements AuthService {
                 .language(Language.FR)
                 .nbPeople(2)
                 .lastRequestDate(LocalDate.now())
+                .isTrial(false)
                 .user(user)
                 .build();
         user.setSetting(setting);

@@ -1,20 +1,18 @@
 package com.development.cookbot.security.filter;
 
+
 import com.development.cookbot.dto.client.UserPrincipalDto;
+import com.development.cookbot.entity.Role;
 import com.development.cookbot.entity.UserEntity;
 import com.development.cookbot.repository.user.UserRepository;
 import com.development.cookbot.security.constant.AiApiUrl;
 import com.development.cookbot.service.client.AuthenticationService;
-import com.development.cookbot.service.preference.constant.PreferenceConstant;
-import com.development.cookbot.service.user.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -25,14 +23,13 @@ import java.util.Map;
 import java.util.Set;
 
 @Component
-@Slf4j
-public class CustomPremiumFilter extends OncePerRequestFilter {
+public class CustomTrialFilter extends OncePerRequestFilter {
 
     @Autowired
     private AuthenticationService authenticationService;
 
     @Autowired
-    protected UserService userService;
+    private UserRepository userRepository;
 
     private static final Set<String> PROTECTED_ENDPOINTS = Set.of(
             AiApiUrl.AI_URL_RECIPE,
@@ -41,8 +38,6 @@ public class CustomPremiumFilter extends OncePerRequestFilter {
             AiApiUrl.AI_URL_RECIPE_IMAGE,
             AiApiUrl.AI_URL_RECIPE_DISH
     );
-    @Autowired
-    private UserRepository userRepository;
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
@@ -50,36 +45,25 @@ public class CustomPremiumFilter extends OncePerRequestFilter {
         return PROTECTED_ENDPOINTS.stream().noneMatch(uri::startsWith);
     }
 
+
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain)
+    protected void doFilterInternal
+            (HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
         UserPrincipalDto user = authenticationService.getPrincipal();
+        LocalDate endedTrialDate = user.getSetting().getEndedTrialDate();
 
-        LocalDate today = LocalDate.now();
-        LocalDate lastRequest = user.getSetting().getLastRequestDate();
+        if(user.getSetting().isTrial() && endedTrialDate.isBefore(LocalDate.now()) && user.getRole().equals("PREMIUM")) {
 
-        // --- 1) Reset journalier si on change de jour ---
-        if (lastRequest == null || !lastRequest.equals(today)) {
-            user.getSetting().setLastRequestDate(today);
-            user.getSetting().setRequestQuantity(0);
-
-            UserEntity userEntity = userService.findById(user.getId());
-            userEntity.setSetting(user.getSetting());
+            // on repasse à free
+            UserEntity userEntity = userRepository.findById(user.getId()).get();
+            userEntity.setRole(Role.FREE);
             userRepository.save(userEntity);
-        }
-
-        // --- 2) Vérification de quota pour les FREE ---
-        if (user.getRole().equals("FREE") && user.getSetting().getRequestQuantity() >= PreferenceConstant.MAX_REQUEST_FREE_USER) {
-
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
             final Map<String, Object> body = new HashMap<>();
             body.put("status", HttpServletResponse.SC_UNAUTHORIZED);
-            body.put("message", "You have reach your daily quota limit");
+            body.put("message", "You trial has ended, please upgrade your account to get access to all features.");
             body.put("data", null);
 
             final ObjectMapper mapper = new ObjectMapper();
@@ -87,20 +71,7 @@ public class CustomPremiumFilter extends OncePerRequestFilter {
             return;
         }
 
-        if(user.getRole().equals("PREMIUM")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        // --- 3) Incrément du compteur ---
-        user.getSetting().setRequestQuantity(user.getSetting().getRequestQuantity() + 1);
-
-        // --- 4) Sauvegarde ---
-        UserEntity userEntity = userService.findById(user.getId());
-        userEntity.setSetting(user.getSetting());
-        userService.saveUserEntity(userEntity);
-
-        // --- 5) Continuer le filtre ---
         filterChain.doFilter(request, response);
+
     }
 }

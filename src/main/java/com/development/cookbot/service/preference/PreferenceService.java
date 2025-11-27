@@ -4,16 +4,19 @@ import com.development.cookbot.dto.client.UserPrincipalDto;
 import com.development.cookbot.dto.preference.PreferenceDto;
 import com.development.cookbot.dto.setting.SettingDto;
 import com.development.cookbot.entity.PreferenceEntity;
+import com.development.cookbot.entity.Role;
 import com.development.cookbot.entity.SettingEntity;
 import com.development.cookbot.entity.UserEntity;
 import com.development.cookbot.exception.NotFoundException;
 import com.development.cookbot.repository.preference.PreferenceRepository;
 import com.development.cookbot.repository.user.UserRepository;
 import com.development.cookbot.service.client.AuthenticationService;
+import com.development.cookbot.service.preference.constant.PreferenceConstant;
 import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -91,6 +94,26 @@ public class PreferenceService {
         return getPreferenceByUserId();
     }
 
+    public String switchToTrial() {
+
+        UserPrincipalDto userPrincipalDto = authenticationService.getPrincipal();
+
+        if(userPrincipalDto == null) {
+            throw new NotFoundException("User not found");
+        }
+
+        UserEntity userEntity = userRepository.findById(userPrincipalDto.getId()).get();
+
+        if(userEntity.getSetting().getEndedTrialDate() == null && userEntity.getRole() == Role.FREE) {
+            userEntity.getSetting().setEndedTrialDate(LocalDate.now().plusDays(PreferenceConstant.TRAIL_ENDED_DAY));
+            userEntity.getSetting().setTrial(true);
+            userEntity.setRole(Role.PREMIUM);
+            userRepository.save(userEntity);
+            return "Your trial period has started for " + PreferenceConstant.TRAIL_ENDED_DAY + " days";
+        }
+
+        throw new RuntimeException("User already has a trial");
+    }
 
     public List<PreferenceDto> deleteUserPreferenceByName(PreferenceDto preferenceDtoInput) {
         UserPrincipalDto userPrincipalDto = authenticationService.getPrincipal();
