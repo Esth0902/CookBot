@@ -1,6 +1,7 @@
 package com.development.cookbot.config;
 
 import com.development.cookbot.security.JwtAuthenticationFilter;
+import com.development.cookbot.security.filter.CustomFridgeFilter;
 import com.development.cookbot.security.filter.CustomPremiumFilter;
 import com.development.cookbot.security.filter.CustomTrialFilter;
 import com.development.cookbot.security.jwt.AuthEntryPointJwt;
@@ -36,6 +37,9 @@ public class SecurityConfig {
     @Autowired
     private CustomTrialFilter customTrialFilter;
 
+    @Autowired
+    private CustomFridgeFilter customFridgeFilter;
+
     @Bean
     public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -61,7 +65,8 @@ public class SecurityConfig {
                 );
 
         http.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
-        http.addFilterAfter(customPremiumFilter, JwtAuthenticationFilter.class);
+        http.addFilterAfter(customFridgeFilter, JwtAuthenticationFilter.class);
+        http.addFilterAfter(customPremiumFilter, CustomFridgeFilter.class);
         http.addFilterAfter(customTrialFilter, CustomPremiumFilter.class);
 
         return http.build();
