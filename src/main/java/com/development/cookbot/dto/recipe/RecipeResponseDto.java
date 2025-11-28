@@ -13,6 +13,9 @@ import java.util.List;
 @Getter
 @Setter
 public class RecipeResponseDto {
+
+    private Long id;
+
     private String name;
 
     private int durationMinutes;

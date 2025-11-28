@@ -20,6 +20,7 @@ public class RecipeMapper {
 
     public RecipeResponseDto ToRecipeResponseDto(RecipeEntity recipeEntity) {
         return RecipeResponseDto.builder()
+                .id(recipeEntity.getId())
                 .name(recipeEntity.getName())
                 .durationMinutes(recipeEntity.getDurationMinutes())
                 .isFavorite(recipeEntity.getIsFavorite())
