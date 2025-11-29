@@ -5,10 +5,10 @@ import com.development.cookbot.dto.client.UserPrincipalDto;
 import com.development.cookbot.exception.NotFoundException;
 import com.development.cookbot.repository.user.UserRepository;
 import com.development.cookbot.service.ai.constant.AiConstant;
+import com.development.cookbot.service.ai.observer.AiMetricLoggerObserver;
 import com.development.cookbot.service.client.AuthenticationService;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
-import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +32,10 @@ public class AiWebCallService {
 
     private final ChatClient chatClient;
 
-    public AiWebCallService(ChatClient.Builder builder, ChatMemory memory) {
+    public AiWebCallService(ChatClient.Builder builder, ChatMemory memory,AiMetricLoggerObserver metricObserver) {
         this.chatClient = builder
                 .defaultAdvisors(MessageChatMemoryAdvisor.builder(memory).build())
-                .defaultAdvisors(new SimpleLoggerAdvisor())
+                .defaultAdvisors(metricObserver)
                 .build();
     }
 
