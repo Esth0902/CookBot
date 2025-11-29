@@ -25,6 +25,22 @@ INSERT INTO user_preferences (user_id, preference_id) VALUES
 (3, 2),
 (1, 5);
 
+-- Shopping list for users
+INSERT INTO shoppings (creation_date,user_id,shopping_list_name) VALUES
+('2025-08-01',1,'Liste de courses pour samedi'),
+('2025-08-01',1,'Liste de courses pour dimanche'),
+('2025-09-10',2, 'Liste de courses pour vendredi');
+
+-- Items in Shopping list
+INSERT INTO items(name,quantity,unit,shopping_id,sequence) VALUES
+('Chicken breast', 500, 'g',1,1),
+('Flour', 200, 'g',1,2),
+('Eggs', 4, 'units',1,3),
+('Lettuce', 1, 'head',2,3),
+('Tomato', 2, 'units',2,1),
+('Bread', 2, 'units',3,1),
+('Milk', 300, 'ml',3,2);
+
 -- Setting for user
 INSERT INTO settings (dark_mode,nb_people,user_id,language,request_quantity,last_request_date,is_trial) VALUES
 (true, 2, 1, 'EN',0,'2025-08-01',false),

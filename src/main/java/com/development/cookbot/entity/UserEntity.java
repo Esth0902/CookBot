@@ -37,6 +37,9 @@ public class UserEntity implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecipeEntity> recipes;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ShoppingEntity> shoppingList;
+
     @ManyToMany
     @JoinTable(
             name = "user_preferences",

@@ -1,0 +1,72 @@
+### GET shoppingList by id
+GET {{host}}:{{port}}/api/v1/shopping/3
+Authorization: Bearer {{token}}
+
+### GET all shopping list for a user
+GET {{host}}:{{port}}/api/v1/shopping
+Authorization: Bearer {{token}}
+
+### Delete an shopping list for a user
+DELETE {{host}}:{{port}}/api/v1/shopping/1
+Authorization: Bearer {{token}}
+
+### Create an shopping list for a user
+POST {{host}}:{{port}}/api/v1/shopping
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "shoppingListName": "Courses TEST created",
+  "creationDate": "2025-01-15T10:30:00",
+  "items": [
+    {
+      "name": "Pommes",
+      "quantity": 6,
+      "unit": "pieces",
+      "sequence": 1
+    },
+    {
+      "name": "Lait",
+      "quantity": 2,
+      "unit": "litres",
+      "sequence": 2
+    },
+    {
+      "name": "Pâtes",
+      "quantity": 1,
+      "unit": "kg",
+      "sequence": 3
+    }
+  ]
+}
+
+### Create an shopping list for a user
+PUT {{host}}:{{port}}/api/v1/shopping
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "id": 4,
+  "shoppingListName": "Courses TEST update",
+  "creationDate": "2025-01-15T10:30:00",
+  "items": [
+    {
+      "name": "Pommes updated",
+      "quantity": 6,
+      "unit": "pieces",
+      "sequence": 1
+    },
+    {
+      "name": "Lait",
+      "quantity": 999,
+      "unit": "litres",
+      "sequence": 2
+    },
+    {
+      "name": "Pâtes",
+      "quantity": 1,
+      "unit": "gr",
+      "sequence": 3
+    }
+  ]
+}
