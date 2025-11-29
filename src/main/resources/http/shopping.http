@@ -1,5 +1,5 @@
 ### GET shoppingList by id
-GET {{host}}:{{port}}/api/v1/shopping/3
+GET {{host}}:{{port}}/api/v1/shopping/1
 Authorization: Bearer {{token}}
 
 ### GET all shopping list for a user
@@ -67,6 +67,40 @@ Content-Type: application/json
       "quantity": 1,
       "unit": "gr",
       "sequence": 3
+    }
+  ]
+}
+
+### add an item in a shopping list for a user
+POST {{host}}:{{port}}/api/v1/shopping/item/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "ajout d'un truc",
+  "quantity": 6,
+  "unit": "pieces",
+  "sequence": 1
+}
+
+### add an item list in a shopping list for a user
+POST {{host}}:{{port}}/api/v1/shopping/item/list/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "items": [
+    {
+      "name": "ajout d'un truc",
+      "quantity": 6,
+      "unit": "pieces",
+      "sequence": 1
+    },
+    {
+      "name": "ajout d'un autre truc",
+      "quantity": 88,
+      "unit": "pieces",
+      "sequence": 1
     }
   ]
 }

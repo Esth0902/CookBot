@@ -58,13 +58,28 @@ public class ShoppingController {
     @PostMapping("/item/{shoppingListId}")
     public ResponseEntity<Object> addItemToShoppingList(@PathVariable Long shoppingListId,
                                                         @RequestBody ItemDto itemDto) {
-        return null;
+
+        ShoppingDto shoppingDtoCreated = shoppingService.addItemToShoppingList(shoppingListId,itemDto);
+        Response<ShoppingDto> response = Response.<ShoppingDto>builder()
+                .responseCode(HttpStatus.OK.value())
+                .responseMessage("Item has been added to shopping list successfully")
+                .data(shoppingDtoCreated)
+                .success(true)
+                .build();
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/item/list/{shoppingListId}")
     public ResponseEntity<Object> addItemListToShoppingList(@PathVariable Long shoppingListId,
-                                                        @RequestBody ItemListDto itemDtoList) {
-        return null;
+                                                            @RequestBody ItemListDto itemDtoList) {
+        ShoppingDto shoppingDtoCreated = shoppingService.addItemListToShoppingList(shoppingListId,itemDtoList);
+        Response<ShoppingDto> response = Response.<ShoppingDto>builder()
+                .responseCode(HttpStatus.OK.value())
+                .responseMessage("Items has been added to shopping list successfully")
+                .data(shoppingDtoCreated)
+                .success(true)
+                .build();
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping
