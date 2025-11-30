@@ -26,7 +26,7 @@ public class MetricEntity {
     private Long totalToken;
     private Timestamp creationDate;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", unique = true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private UserEntity user;
 }

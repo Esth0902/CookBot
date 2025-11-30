@@ -51,8 +51,8 @@ public class UserEntity implements UserDetails {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private SettingEntity setting;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private MetricEntity metricEntity;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MetricEntity> metricEntity;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
