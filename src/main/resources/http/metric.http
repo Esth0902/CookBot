@@ -1,0 +1,7 @@
+### GET metric by user id
+GET {{host}}:{{port}}/api/v1/metric/2
+Authorization: Bearer {{token}}
+
+### GET metrics with range date
+GET {{host}}:{{port}}/api/v1/metric?dateStart=2024-09-01%2008:00:00&dateEnd=2024-10-01%2014:30:00
+Authorization: Bearer {{token}}
