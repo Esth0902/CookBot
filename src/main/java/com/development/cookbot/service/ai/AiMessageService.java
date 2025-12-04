@@ -51,7 +51,7 @@ public class AiMessageService {
     public String formatQueryDish(AiDishInputDto aiDishInputDto) {
         return """
         Donne moi la recette avec les ingrédients et les étapes pour le plat suivants : %s
-        """.formatted(aiDishInputDto);
+        """.formatted(aiDishInputDto.getDishName());
     }
 
     public List<Message> getFewShotExamples_RecipeFromDish() {

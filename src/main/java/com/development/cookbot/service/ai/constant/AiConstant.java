@@ -45,7 +45,6 @@ public class AiConstant {
                 Règles de sortie :
                 - Tu dois OBLIGATOIREMENT répondre au format JSON valide.
                 - Ne mets aucun texte ou explication en dehors du JSON.
-                - Le JSON doit suivre strictement cette structure :
             """;
 
     /**
