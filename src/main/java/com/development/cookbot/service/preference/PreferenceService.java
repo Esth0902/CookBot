@@ -10,6 +10,7 @@ import com.development.cookbot.entity.UserEntity;
 import com.development.cookbot.exception.NotFoundException;
 import com.development.cookbot.repository.preference.PreferenceRepository;
 import com.development.cookbot.repository.user.UserRepository;
+import com.development.cookbot.security.JwtTokenProvider;
 import com.development.cookbot.service.client.AuthenticationService;
 import com.development.cookbot.service.preference.constant.PreferenceConstant;
 import org.apache.commons.text.similarity.LevenshteinDistance;
@@ -31,6 +32,9 @@ public class PreferenceService {
 
     @Autowired
     private PreferenceRepository preferenceRepository;
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     public List<PreferenceDto> getPreferenceByUserId() {
         UserPrincipalDto userPrincipalDto = authenticationService.getPrincipal();
@@ -109,7 +113,8 @@ public class PreferenceService {
             userEntity.getSetting().setTrial(true);
             userEntity.setRole(Role.PREMIUM);
             userRepository.save(userEntity);
-            return "Your trial period has started for " + PreferenceConstant.TRAIL_ENDED_DAY + " days";
+
+            return jwtTokenProvider.generateTokenForTrial();
         }
 
         throw new RuntimeException("User already has a trial");
