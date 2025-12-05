@@ -38,8 +38,8 @@ public class MetricsService {
 
         for(MetricEntity metricEntity: metricEntities) {
             MetricDto metricDto = metricMapper.mapToMetricDto(metricEntity);
-            metricDto.setUserId(userPrincipalDto.getId());
-            metricDto.setUsername(userPrincipalDto.getUsername());
+            metricDto.setUserId(metricEntity.getUser().getId());
+            metricDto.setUsername(metricEntity.getUser().getUsername());
             metricDtos.add(metricDto);
         }
 
