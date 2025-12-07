@@ -19,6 +19,7 @@ public class ItemEntity {
     private double quantity;
     private String unit;
     private Integer sequence;
+    private Boolean bought;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shopping_id")

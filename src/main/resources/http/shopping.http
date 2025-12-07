@@ -23,18 +23,21 @@ Content-Type: application/json
       "name": "Pommes",
       "quantity": 6,
       "unit": "pieces",
+      "bought": true,
       "sequence": 1
     },
     {
       "name": "Lait",
       "quantity": 2,
       "unit": "litres",
+      "bought": false,
       "sequence": 2
     },
     {
       "name": "Pâtes",
       "quantity": 1,
       "unit": "kg",
+      "bought": false,
       "sequence": 3
     }
   ]
@@ -54,18 +57,21 @@ Content-Type: application/json
       "name": "Pommes updated",
       "quantity": 6,
       "unit": "pieces",
+      "bought": false,
       "sequence": 1
     },
     {
       "name": "Lait",
       "quantity": 999,
       "unit": "litres",
+      "bought": true,
       "sequence": 2
     },
     {
       "name": "Pâtes",
       "quantity": 1,
       "unit": "gr",
+      "bought": true,
       "sequence": 3
     }
   ]
@@ -80,6 +86,7 @@ Content-Type: application/json
   "name": "ajout d'un truc",
   "quantity": 6,
   "unit": "pieces",
+  "bought": false,
   "sequence": 1
 }
 
@@ -94,12 +101,14 @@ Content-Type: application/json
       "name": "ajout d'un truc",
       "quantity": 6,
       "unit": "pieces",
+      "bought": false,
       "sequence": 1
     },
     {
       "name": "ajout d'un autre truc",
       "quantity": 88,
       "unit": "pieces",
+      "bought": false,
       "sequence": 1
     }
   ]

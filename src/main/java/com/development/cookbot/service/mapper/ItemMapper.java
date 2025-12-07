@@ -11,6 +11,7 @@ public class ItemMapper {
                 .name(itemDto.getName())
                 .quantity(itemDto.getQuantity())
                 .sequence(itemDto.getSequence())
+                .bought(itemDto.isBought())
                 .unit(itemDto.getUnit())
                 .build();
     }

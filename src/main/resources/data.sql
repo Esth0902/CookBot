@@ -32,14 +32,15 @@ INSERT INTO shoppings (creation_date,user_id,shopping_list_name) VALUES
 ('2025-09-10',2, 'Liste de courses pour vendredi');
 
 -- Items in Shopping list
-INSERT INTO items(name,quantity,unit,shopping_id,sequence) VALUES
-('Chicken breast', 500, 'g',1,1),
-('Flour', 200, 'g',1,2),
-('Eggs', 4, 'units',1,3),
-('Lettuce', 1, 'head',2,3),
-('Tomato', 2, 'units',2,1),
-('Bread', 2, 'units',3,1),
-('Milk', 300, 'ml',3,2);
+INSERT INTO items(name,quantity,unit,shopping_id,sequence,bought) VALUES
+('Chicken breast', 500, 'g',1,1,false),
+('Guanciale', 150, 'g',1,2,false),
+('Flour', 200, 'g',1,2,false),
+('Eggs', 4, 'units',1,3,false),
+('Lettuce', 1, 'head',2,3,false),
+('Tomato', 2, 'units',2,1,false),
+('Bread', 2, 'units',3,1,false),
+('Milk', 300, 'ml',3,2,false);
 
 -- Setting for user
 INSERT INTO settings (dark_mode,nb_people,user_id,language,request_quantity,last_request_date,is_trial) VALUES

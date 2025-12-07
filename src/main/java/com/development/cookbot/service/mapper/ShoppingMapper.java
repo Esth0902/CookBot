@@ -28,6 +28,7 @@ public class ShoppingMapper {
             itemDto.setUnit(itemEntity.getUnit());
             itemDto.setName(itemEntity.getName());
             itemDto.setQuantity(itemEntity.getQuantity());
+            itemDto.setBought(itemEntity.getBought());
             itemDto.setSequence(itemEntity.getSequence());
             itemDtos.add(itemDto);
             shoppingDto.setItems(itemDtos);
@@ -50,6 +51,7 @@ public class ShoppingMapper {
             itemEntity.setName(itemDto.getName());
             itemEntity.setQuantity(itemDto.getQuantity());
             itemEntity.setSequence(itemDto.getSequence());
+            itemEntity.setBought(itemDto.isBought());
             itemEntity.setShoppingEntity(shoppingEntity);
             itemEntities.add(itemEntity);
         }

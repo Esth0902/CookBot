@@ -12,5 +12,6 @@ public class ItemDto {
     private String name;
     private double quantity;
     private String unit;
+    private boolean bought;
     private Integer sequence;
 }
