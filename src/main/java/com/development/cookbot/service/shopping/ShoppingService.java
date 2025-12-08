@@ -8,6 +8,7 @@ import com.development.cookbot.entity.ItemEntity;
 import com.development.cookbot.entity.ShoppingEntity;
 import com.development.cookbot.entity.UserEntity;
 import com.development.cookbot.exception.NotFoundException;
+import com.development.cookbot.repository.item.ItemRepository;
 import com.development.cookbot.repository.shopping.ShoppingRepository;
 import com.development.cookbot.repository.user.UserRepository;
 import com.development.cookbot.service.client.AuthenticationService;
@@ -38,6 +39,10 @@ public class ShoppingService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ItemRepository itemRepository;
+
+
     public ShoppingDto createShoppingList(ShoppingDto shoppingDto) {
 
         UserPrincipalDto userPrincipalDto = authenticationService.getPrincipal();
@@ -57,6 +62,22 @@ public class ShoppingService {
         {
             throw new RuntimeException("You can only have 5 shopping lists");
         }
+    }
+
+    public String deleteShoppingItemById(Long id) {
+
+        UserPrincipalDto userPrincipalDto = authenticationService.getPrincipal();
+
+        ItemEntity itemEntity = itemRepository.findById(id).orElseThrow(() ->
+           new NotFoundException("Item not found with id: " + id));
+
+        if(itemEntity.getShoppingEntity().getUser().getId().equals(userPrincipalDto.getId())) {
+            itemEntity.getShoppingEntity().getItemList().remove(itemEntity);
+            itemRepository.deleteById(id);
+            return "Shopping item deleted";
+        }
+
+        throw new RuntimeException("Shopping item not found with id: " + id);
     }
 
     public ShoppingDto updateShoppingList(ShoppingDto shoppingDto) {

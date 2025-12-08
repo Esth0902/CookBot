@@ -94,6 +94,18 @@ public class ShoppingController {
         return ResponseEntity.ok(response);
     }
 
+    @DeleteMapping("/item/delete/{id}")
+    public ResponseEntity<Object> deleteShoppingItemById(@PathVariable Long id) {
+        String responseDeletion = shoppingService.deleteShoppingItemById(id);
+        Response<String> response = Response.<String>builder()
+                .responseCode(HttpStatus.OK.value())
+                .responseMessage("Shopping item has been deleted successfully")
+                .data(responseDeletion)
+                .success(true)
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Object> getShoppingListById(@PathVariable Long id) {
         ShoppingDto shoppingDto = shoppingService.getShoppingListById(id);

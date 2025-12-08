@@ -10,6 +10,10 @@ Authorization: Bearer {{token}}
 DELETE {{host}}:{{port}}/api/v1/shopping/1
 Authorization: Bearer {{token}}
 
+### Delete item in a shopping list
+DELETE {{host}}:{{port}}/api/v1/shopping/item/delete/9
+Authorization: Bearer {{token}}
+
 ### Create an shopping list for a user
 POST {{host}}:{{port}}/api/v1/shopping
 Authorization: Bearer {{token}}
