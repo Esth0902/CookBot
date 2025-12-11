@@ -8,7 +8,7 @@ on:
 # 2. Variables d'environnement globales (si besoin)
 env:
   JAVA_VERSION: '17' # Utilisez la version Java de votre projet (11, 17, 21, etc.)
-  BUILD_DIRECTORY: './cook-bot' # Adaptez si votre code Spring Boot n'est pas à la racine
+  #BUILD_DIRECTORY: './cook-bot' # Adaptez si votre code Spring Boot n'est pas à la racine
 
 # 3. Définition des Tâches (Jobs)
 jobs:
