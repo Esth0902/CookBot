@@ -1,0 +1,39 @@
+# 1. Déclencheurs (Triggers)
+# Quand le workflow doit-il s'exécuter ?
+on:
+  push:
+    branches: [ "master" ] # Adaptez le nom de votre branche principale
+  pull_request:
+    branches: [ "master" ]
+# 2. Variables d'environnement globales (si besoin)
+env:
+  JAVA_VERSION: '17' # Utilisez la version Java de votre projet (11, 17, 21, etc.)
+  BUILD_DIRECTORY: './backend' # Adaptez si votre code Spring Boot n'est pas à la racine
+
+# 3. Définition des Tâches (Jobs)
+jobs:
+  build_and_test_backend:
+    name: Build & Test Backend
+    runs-on: ubuntu-latest # Environnement d'exécution (serveur virtuel)
+
+    steps:
+      # Étape 1: Cloner le code du dépôt GitHub
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+
+      # Étape 2: Configurer l'environnement Java
+      - name: Set up JDK ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin' # Fournisseur JDK stable
+
+      # Étape 3: Créer le rapport de test (optionnel mais très utile)
+      # Nécessite que vos tests soient configurés pour générer un rapport (ex: Surefire ou JaCoCo)
+      - name: Set up required environment variables for Surefire/Jacoco
+        run: |
+          echo "MAVEN_OPTS=-Dfile.encoding=UTF-8" >> $GITHUB_ENV
+      # Étape 4: Compiler et exécuter les tests avec Maven
+      - name: Build and run tests with Maven
+        run: mvn clean test --file pom.xml # '-B' pour mode non-interactif
+        working-directory: ${{ env.BUILD_DIRECTORY }} # Exécuter la commande dans le répertoire du back-end
