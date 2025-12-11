@@ -1,3 +1,11 @@
+# Docker : build images
+
+docker build -t cookbot:latest .
+
+## Docker : run image
+
+
+
 # CookBot API Frontend Documentation
 
 This document provides instructions for frontend developers to interact with the CookBot API endpoints. All examples use JavaScript's `fetch` API.
