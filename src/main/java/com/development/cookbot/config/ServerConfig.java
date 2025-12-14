@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class ServerConfig implements WebMvcConfigurer {
 
-    @Value("${app.cross-origin}")
+    @Value("${app.cors-origin}")
     private String corsOrigin;
 
     @Override
