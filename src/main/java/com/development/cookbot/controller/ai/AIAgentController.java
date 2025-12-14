@@ -86,12 +86,6 @@ public class AIAgentController {
     }
 
 
-//    @PreAuthorize("hasAnyAuthority('PREMIUM')")
-//    @GetMapping(value = "/demo")
-//    public String askRecipeDemo() throws IOException {
-//        return "Hello there";
-//    }
-
     @GetMapping(value = "/recipe/season")
     public ResponseEntity<Object> askRecipeAccordingToSeason() throws IOException {
 
