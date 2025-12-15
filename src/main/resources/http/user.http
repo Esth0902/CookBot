@@ -35,6 +35,12 @@ Content-Type: application/json
     "language": null
 }
 
+
+### PUT anonymizate user connected
+PUT {{host}}:{{port}}/api/v1/user/anonymate
+Authorization: Bearer {{token}}
+
+
 ### SWITCH TO TRIAL
 GET {{host}}:{{port}}/api/v1/user/trial
 Authorization: Bearer {{token}}

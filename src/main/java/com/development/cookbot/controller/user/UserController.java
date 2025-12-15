@@ -4,6 +4,7 @@ import com.development.cookbot.dto.preference.PreferenceDto;
 import com.development.cookbot.dto.setting.SettingDto;
 import com.development.cookbot.exception.utils.Response;
 import com.development.cookbot.service.preference.PreferenceService;
+import com.development.cookbot.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,9 @@ public class UserController {
 
     @Autowired
     private PreferenceService preferenceService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/preferences")
     public ResponseEntity<Object> getUserPreferences() {
@@ -74,6 +78,18 @@ public class UserController {
                 .responseCode(HttpStatus.OK.value())
                 .responseMessage("Operation done successfully")
                 .data(settingDto)
+                .success(true)
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/anonymate")
+    public ResponseEntity<Object> anonymizeUser() {
+        String res = userService.anonymizeUser();
+        Response<String> response = Response.<String>builder()
+                .responseCode(HttpStatus.OK.value())
+                .responseMessage("Operation done successfully")
+                .data(res)
                 .success(true)
                 .build();
         return ResponseEntity.ok(response);
