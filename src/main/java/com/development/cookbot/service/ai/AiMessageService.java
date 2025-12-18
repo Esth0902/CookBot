@@ -2,15 +2,23 @@ package com.development.cookbot.service.ai;
 
 import com.development.cookbot.dto.ai.AiDishInputDto;
 import com.development.cookbot.dto.ai.AiRecipeInputDto;
+import com.development.cookbot.dto.preference.PreferenceDto;
+import com.development.cookbot.service.preference.PreferenceService;
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.UserMessage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
 @Service
 public class AiMessageService {
+
+    @Autowired
+    private PreferenceService preferenceService;
+
     public String formatQuery(AiRecipeInputDto aiRecipeInputDto) {
         String ingredientsList = aiRecipeInputDto.getIngredients().stream()
                 .map(ingredient -> "- "
@@ -41,17 +49,31 @@ public class AiMessageService {
     }
 
     public String formatQueryForSeasonRecipe() {
+
+        String alergeneList =  preferenceService.getPreferenceByUserId()
+                .stream()
+                .map(PreferenceDto::getAllergen)
+                .collect(Collectors.joining(","));
+
         return """
             Crée-moi une recette utilisant uniquement des produits de saison.
             Donne-moi également jusqu’à 8 conseils variés concernant la préparation, la cuisson ou l’assaisonnement du plat.
-            """;
+            Mais n'utilise pas d'ingrédients contenant les alergènes de cette liste ni des ingrédients dérivés : %s.
+            """.formatted(alergeneList);
     }
 
 
     public String formatQueryDish(AiDishInputDto aiDishInputDto) {
+
+        String alergeneList =  preferenceService.getPreferenceByUserId()
+                .stream()
+                .map(PreferenceDto::getAllergen)
+                .collect(Collectors.joining(","));
+
         return """
-        Donne moi la recette avec les ingrédients et les étapes pour le plat suivants : %s
-        """.formatted(aiDishInputDto.getDishName());
+        Donne moi la recette avec les ingrédients et les étapes pour le plat suivants : %s.
+        Mais n'utilise pas d'ingrédients contenant les alergènes de cette liste ni des ingrédients dérivés : %s.
+        """.formatted(aiDishInputDto.getDishName(),alergeneList);
     }
 
     public List<Message> getFewShotExamples_RecipeFromDish() {
